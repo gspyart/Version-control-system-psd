@@ -21,7 +21,7 @@ namespace GitLog
     }
     class UserData
     {
-        private List<User> activeUsers = new List<User>(); //список активных пользователей
+        private List<User> activeUsers = new List<User>(); //list of active users
         public void AddUser(User person)
         {
             foreach (User o in activeUsers)
@@ -33,7 +33,7 @@ namespace GitLog
                 activeUsers.Add(person);
             }
 
-        } //добавление нового пользователя (class User)
+        } //add new active user (class User)
         public void UsersLoad()
         {
             if (File.Exists("tklist"))
@@ -42,7 +42,7 @@ namespace GitLog
                 activeUsers = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
             }
             else { new StreamWriter("tklist"); }
-        }  //выгружает файл с авторизированными пользователями
+        }  //upload file of active users
         public void UsersSave()
         {
 
@@ -66,13 +66,13 @@ namespace GitLog
                 StreamWriter tklist_w = new StreamWriter("tklist");
                 tklist_w.Write(JsonConvert.SerializeObject(activeUsers));
             }
-        } //сохраняет новый файл с авторизованными пользователями
+        } //save file of active users
     }
     class Auth
     {
         delegate void kek();
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
-        UserData data = new UserData(); //список авторизиованных пользователей + методы для их добавления
+        UserData data = new UserData(); 
         User sender; // активный пользователь
         public void Choose(User a)
         {
