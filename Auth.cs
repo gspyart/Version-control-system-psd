@@ -40,6 +40,7 @@ namespace GitLog
             {
                 StreamReader tklist = new StreamReader("tklist");
                 activeUsers = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
+                tklist.Close();
             }
             else { new StreamWriter("tklist"); }
         }  //upload file of active users
@@ -65,6 +66,7 @@ namespace GitLog
             {
                 StreamWriter tklist_w = new StreamWriter("tklist");
                 tklist_w.Write(JsonConvert.SerializeObject(activeUsers));
+                tklist_w.Close();
             }
         } //save file of active users
     }
