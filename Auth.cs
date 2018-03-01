@@ -70,7 +70,6 @@ namespace GitLog
     }
     class Auth
     {
-        delegate void kek();
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
         UserData data = new UserData(); 
         User sender; // активный пользователь
