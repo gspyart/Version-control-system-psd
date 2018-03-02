@@ -1,12 +1,46 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+
+using System.Threading.Tasks;
 using System.IO;
 namespace archive
 {
     
     static class Compression
     {
+        static byte[] Diff(byte[] byte_file, byte[] byte_file2)
+        {
+            byte[] r;
+            r = new byte[1];
+            void op()
+            {
+                r = new byte[byte_file.Length]; 
+                for (int i = 0; i < byte_file.Length;i++)
+                {
+                    r[i] = (byte)(byte_file[i] ^ byte_file2[i]);
+                }
+            }
+          
+            if (byte_file.Length == byte_file2.Length)
+            {
+                op();
+ 
+            }
+            else if (byte_file.Length > byte_file2.Length)
+            {
+                Array.Resize(ref byte_file2, byte_file.Length);
+                op();
+            }
+            else if (byte_file.Length < byte_file2.Length)
+            {
+                Array.Resize(ref byte_file, byte_file.Length);
+                op();
+            }
+            return r;
+
+        }
         static byte[] Compress(byte[] byte_file)
         {
 
@@ -42,13 +76,10 @@ namespace archive
                 {
                     buffer.Add(byte_file[i]);
                     v = i;
-
                 }
                 dl = 0;
-
                 if (buffer.Count == 1)
                 {
-
                     for (int i = pos; i < byte_file.Length - 1 && byte_file[i] != byte_file[i + 1] && dl != 127; i++, dl++)
                     {
 
@@ -59,11 +90,8 @@ namespace archive
                             buffer2.Add(byte_file[i + 1]);
                         }
                     }
-
                     apart(ref buffer2, false);
                     buffer.Clear();
-
-
                 }
                 else
                 {
@@ -72,7 +100,6 @@ namespace archive
                 }
                 dl = 0;
                 v++;
-
             }
             return new_file.ToArray();
         }
