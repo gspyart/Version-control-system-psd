@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -37,17 +37,22 @@ namespace DropbBoxLogIn
             public DropboxClient client;
             public void AddUser(User person)
             {
+                bool l = true;
                 foreach (User o in activeUsers)
                 {
-                    if (o.token == person.token || o.username == person.username)
+                    if (o.token == person.token)
                     {
-                        MessageBox.Show("same user");
-                        throw new Exception("same user");
+                        l = false;
+                        
                     }
+  
                    
                 }
-                activeUsers.Add(person);
 
+                if (l == true)
+                {
+                    activeUsers.Add(person);
+                }
             } //add new active user (class User)
             public void UsersLoad()
             {
@@ -58,6 +63,7 @@ namespace DropbBoxLogIn
                     info = JsonConvert.DeserializeObject<Jsondata>(tklist.ReadToEnd());
                     sender = info.activeuser;
                     activeUsers = info.allusers;
+                    if (sender != null) client = new DropboxClient(sender.token);
                     tklist.Close();
                 }
                 
@@ -95,7 +101,9 @@ namespace DropbBoxLogIn
        
         public void Choose(User a)
         {
-            if (a.token.Length != 0 || a.username.Length != 0) data.sender = a;
+            if (a.token.Length != 0 || a.username.Length != 0) { data.sender = a;
+                data.client = new DropboxClient(a.token);
+            }
             else throw new Exception("Error user");
 
         } //выбор активного пользователя со списка
