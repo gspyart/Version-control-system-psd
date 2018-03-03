@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
 using System.Net;
+
 namespace DropbBoxLogIn
 {
     public class User
@@ -33,6 +34,7 @@ namespace DropbBoxLogIn
            
             public User sender; // активный пользователь
             private List<User> activeUsers = new List<User>(); //list of active users
+            public DropboxClient client;
             public void AddUser(User person)
             {
                 foreach (User o in activeUsers)
@@ -102,8 +104,8 @@ namespace DropbBoxLogIn
             Uri uri_token = ex.Url;
             OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
 
-            DropboxClient client = new DropboxClient(s_Token.AccessToken);
-            var inf = await client.Users.GetCurrentAccountAsync();
+            data.client = new DropboxClient(s_Token.AccessToken);
+            var inf = await data.client.Users.GetCurrentAccountAsync();
             data.sender = new User(inf.Name.DisplayName, s_Token.AccessToken);
             data.AddUser(data.sender);
             data.UsersSave();
@@ -113,6 +115,11 @@ namespace DropbBoxLogIn
         {
             explorer.Navigate(link);
         } //добавить нового пользователя
+        public void LogOut()
+        {
+            data.sender = null;
+            data.UsersSave();
+        }
         public Auth()
         {
            data.UsersLoad();
