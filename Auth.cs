@@ -1,15 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Dropbox.Api;
+using Dropbox.Api.Users;
 using Newtonsoft.Json;
 using System.IO;
-
-namespace GitLog
+using System.Threading.Tasks;
+using System.Net;
+namespace DropbBoxLogIn
 {
-
-    class User
+    public class User
     {
         public string username;
         public string token;
@@ -19,61 +20,61 @@ namespace GitLog
             token = t;
         }
     }
-    class UserData
-    {
-        private List<User> activeUsers = new List<User>(); //list of active users
-        public void AddUser(User person)
-        {
-            foreach (User o in activeUsers)
-            {
-                if (o.token == person.token || o.username == person.username)
-                {
-                    throw new Exception("same user");
-                }
-                activeUsers.Add(person);
-            }
-
-        } //add new active user (class User)
-        public void UsersLoad()
-        {
-            if (File.Exists("tklist"))
-            {
-                StreamReader tklist = new StreamReader("tklist");
-                activeUsers = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
-                tklist.Close();
-            }
-            else { new StreamWriter("tklist"); }
-        }  //upload file of active users
-        public void UsersSave()
-        {
-
-            if (File.Exists("tklist"))
-            {
-                StreamReader tklist = new StreamReader("tklist");
-                List<User> buffus = new List<User>();
-                buffus = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
-                tklist.Close();
-                foreach (User b in activeUsers)
-                {
-                    buffus.Add(b);
-                }
-                StreamWriter tklist_w = new StreamWriter("tklist");
-                tklist_w.Write(JsonConvert.SerializeObject(buffus));
-                tklist_w.Close();
-
-            }
-            else
-            {
-                StreamWriter tklist_w = new StreamWriter("tklist");
-                tklist_w.Write(JsonConvert.SerializeObject(activeUsers));
-                tklist_w.Close();
-            }
-        } //save file of active users
-    }
     class Auth
     {
+      
+        protected internal class UserData
+        {
+            private List<User> activeUsers = new List<User>(); //list of active users
+            public void AddUser(User person)
+            {
+                foreach (User o in activeUsers)
+                {
+                    if (o.token == person.token || o.username == person.username)
+                    {
+                        MessageBox.Show("same user");
+                        throw new Exception("same user");
+                    }
+                   
+                }
+                activeUsers.Add(person);
+
+            } //add new active user (class User)
+            public void UsersLoad()
+            {
+                if (File.Exists("userlist"))
+                {
+                    StreamReader tklist = new StreamReader("userlist");
+                    activeUsers = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
+                    tklist.Close();
+                }
+                
+            }  //upload file of active users
+            public void UsersSave()
+            {
+
+                if (File.Exists("userlist"))
+                {
+                    File.Delete("userlist");
+                    StreamWriter tklist_w = new StreamWriter("userlist");
+                    tklist_w.Write(JsonConvert.SerializeObject(activeUsers));
+                    tklist_w.Close();
+                }
+                else
+                {
+                    StreamWriter tklist_w = new StreamWriter("userlist");
+                    tklist_w.Write(JsonConvert.SerializeObject(activeUsers.ToArray()));
+                    tklist_w.Close();
+                } 
+            } //save file of active users
+            public List<User> GetList()
+            {
+                return activeUsers;
+            }
+        }
+        //g9k6M7MsLsAAAAAAAAAAGICpJg05VVzBHf7TLMNJXUtd28EJ45qRbmrTMyGoowMJ
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
-        UserData data = new UserData(); 
+        public UserData data = new UserData();
         User sender; // активный пользователь
         public void Choose(User a)
         {
@@ -81,23 +82,27 @@ namespace GitLog
             else throw new Exception("Error user");
 
         } //выбор активного пользователя со списка
-
-        public void AddNew(WebBrowser explorer)
+        async public Task Logined(WebBrowser ex)
         {
-            void AddNew_Next(WebBrowser ex)
-            {
-                Uri uri_token = ex.Url;
-                OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
-                data.AddUser(new User(s_Token.Uid, s_Token.AccessToken));
-            }
-            explorer.Navigate(link);
-            explorer.Size = new Size(500, 500);
-            explorer.Top = 0;
-            explorer.Left = 100;
+            Uri uri_token = ex.Url;
+            OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
 
-            WebBrowserNavigatedEventHandler a = (ab, ba) => { ba.Url.AbsoluteUri.Contains("https://localhost/"); AddNew_Next(explorer); };
-            explorer.Navigated += a;
+            DropboxClient client = new DropboxClient(s_Token.AccessToken);
+            var inf = await client.Users.GetCurrentAccountAsync();
+            sender = new User(inf.Name.DisplayName, s_Token.AccessToken);
+            data.AddUser(sender);
+            data.UsersSave();
+
+        }
+        public void Login(WebBrowser explorer)
+        {
+            explorer.Navigate(link);
+        } //добавить нового пользователя
+        public Auth()
+        {
+           data.UsersLoad();
         }
     }
+
 
 }
