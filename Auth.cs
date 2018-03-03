@@ -25,6 +25,13 @@ namespace DropbBoxLogIn
       
         protected internal class UserData
         {
+            protected internal class Jsondata
+            {
+                public User activeuser;
+                public List<User> allusers;
+            }
+           
+            public User sender; // активный пользователь
             private List<User> activeUsers = new List<User>(); //list of active users
             public void AddUser(User person)
             {
@@ -45,7 +52,10 @@ namespace DropbBoxLogIn
                 if (File.Exists("userlist"))
                 {
                     StreamReader tklist = new StreamReader("userlist");
-                    activeUsers = JsonConvert.DeserializeObject<List<User>>(tklist.ReadToEnd());
+                    Jsondata info = new Jsondata();
+                    info = JsonConvert.DeserializeObject<Jsondata>(tklist.ReadToEnd());
+                    sender = info.activeuser;
+                    activeUsers = info.allusers;
                     tklist.Close();
                 }
                 
@@ -56,14 +66,20 @@ namespace DropbBoxLogIn
                 if (File.Exists("userlist"))
                 {
                     File.Delete("userlist");
+                    Jsondata dd = new Jsondata();
                     StreamWriter tklist_w = new StreamWriter("userlist");
-                    tklist_w.Write(JsonConvert.SerializeObject(activeUsers));
+                    dd.activeuser = sender;
+                    dd.allusers = activeUsers;
+                    tklist_w.Write(JsonConvert.SerializeObject(dd));
                     tklist_w.Close();
                 }
                 else
                 {
+                    Jsondata dd = new Jsondata();
+                    dd.activeuser = sender;
+                    dd.allusers = activeUsers;
                     StreamWriter tklist_w = new StreamWriter("userlist");
-                    tklist_w.Write(JsonConvert.SerializeObject(activeUsers.ToArray()));
+                    tklist_w.Write(JsonConvert.SerializeObject(dd));
                     tklist_w.Close();
                 } 
             } //save file of active users
@@ -72,13 +88,12 @@ namespace DropbBoxLogIn
                 return activeUsers;
             }
         }
-        //g9k6M7MsLsAAAAAAAAAAGICpJg05VVzBHf7TLMNJXUtd28EJ45qRbmrTMyGoowMJ
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
         public UserData data = new UserData();
-        User sender; // активный пользователь
+       
         public void Choose(User a)
         {
-            if (a.token.Length != 0 || a.username.Length != 0) sender = a;
+            if (a.token.Length != 0 || a.username.Length != 0) data.sender = a;
             else throw new Exception("Error user");
 
         } //выбор активного пользователя со списка
@@ -89,8 +104,8 @@ namespace DropbBoxLogIn
 
             DropboxClient client = new DropboxClient(s_Token.AccessToken);
             var inf = await client.Users.GetCurrentAccountAsync();
-            sender = new User(inf.Name.DisplayName, s_Token.AccessToken);
-            data.AddUser(sender);
+            data.sender = new User(inf.Name.DisplayName, s_Token.AccessToken);
+            data.AddUser(data.sender);
             data.UsersSave();
 
         }
