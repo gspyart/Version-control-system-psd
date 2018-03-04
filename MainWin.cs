@@ -90,6 +90,10 @@ namespace dp
         {
             this.Enabled = false;
             Program.id.LogOut();
+            Form1 k = new Form1();
+            label1.Text = label5.Text = "none";
+            
+            k.Show();
             this.Enabled = true;
         }
 

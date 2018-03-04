@@ -21,11 +21,16 @@ namespace DropbBoxLogIn
             token = t;
         }
     }
+
+    
     class Auth
     {
-
+       
         protected internal class UserData
         {
+  
+
+
             protected internal class Jsondata
             {
                 public User activeuser;
@@ -104,7 +109,6 @@ namespace DropbBoxLogIn
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
         public UserData data = new UserData();
 
-
         public void DeleteUser(User o)
         {
             data.DeleteUser(o);
@@ -118,7 +122,7 @@ namespace DropbBoxLogIn
                 try
                 {
                     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
-                data.UsersSave();
+                    data.UsersSave();
             }
                 catch (Dropbox.Api.DropboxException v) //если токен недействителен
                 {
