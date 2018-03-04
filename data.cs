@@ -10,9 +10,9 @@ namespace dp
     public class info //информация о коммите
     {
         string name { get; set; }
-        DateTime t { get; set; }
+        DateTime t { get { return this.t; } set { this.t = value; } }
         string descr { get; set; }
-        public info(string n,string o)
+        public info(string n, string o)
         {
             name = n;
             t = new DateTime();

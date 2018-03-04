@@ -12,11 +12,12 @@ using System.IO;
 
 namespace dp
 {
-    
+
     public partial class MainWin : Form
     {
         OpenFileDialog dir = new OpenFileDialog();
         List<PSDFile> projects = new List<PSDFile>(); //список проектов
+
         public void update()
         {
             listBox2.Items.Clear(); //очистка, перед обновлением списка2
@@ -30,20 +31,20 @@ namespace dp
 
         public MainWin()
         {
-            int i = 0;
             InitializeComponent();
+            int i = 0;
             listBox1.DisplayMember = "name";
-            listBox2.DisplayMember = "t.date";
+            listBox2.DisplayMember = "t";
             dir.Filter = "Psd file (*.psd)|*.psd";
-
             dir.FileOk += (a, b) =>
             {
                 string name = dir.SafeFileName.Remove(dir.SafeFileName.Length - 4, 4);
-               
+
 
                 var p1 = new PSDFile(name, dir.FileName.Remove(dir.FileName.Length - dir.SafeFileName.Length, dir.SafeFileName.Length), Convert.ToString(i));
 
-                p1.looks.Changed += new FileSystemEventHandler(delegate {
+                p1.looks.Changed += new FileSystemEventHandler(delegate
+                {
                     p1.AddCommit(new info("descr", "name"));
                     p1.looks.EnableRaisingEvents = false;
                     p1.looks.EnableRaisingEvents = true;
@@ -54,44 +55,47 @@ namespace dp
                 listBox1.Items.Add(p1);
                 i++;
             };
-
         }
 
-       
-        private  async void MainWin_Load(object sender, EventArgs e)
+        private async void MainWin_Load(object sender, EventArgs e) //загрузка программы
         {
-           
-            if (Program.id.data.client != null)
+            try
             {
-                label1.Text = Program.id.data.sender.username;
-                var k = await Program.id.data.client.Users.GetCurrentAccountAsync();
-                label5.Text = k.Email;
+                Enabled = false;
+                if (Program.id.data.client != null) //если есть авторизированный пользователь
+                {      
+                    var k = await Program.id.data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
+                    label5.Text = k.Email;
+                    label1.Text = k.Name.DisplayName;
+                }
+                else
+                {
+                    Form1 auth = new Form1();
+                    auth.Show();
+                }
+                Enabled = true;
             }
-            
-          
-            
+            catch (Dropbox.Api.DropboxException a) //если токен недействителен
+            {
+                Program.id.DeleteUser(Program.id.data.sender);
+                Program.id.LogOut();
+                MessageBox.Show(a.Message);
+                Application.Exit();
+            }
+
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
             this.Enabled = false;
             Program.id.LogOut();
-            Form1 o = new Form1();
-            o.Show();
             this.Enabled = true;
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-        
-    private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             dir.ShowDialog();
-           
-          
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -99,9 +103,11 @@ namespace dp
             update();
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
         }
     }
 }

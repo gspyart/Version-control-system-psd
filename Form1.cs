@@ -19,7 +19,6 @@ namespace dp
        
 
         public WebBrowser explorer = new WebBrowser();
-        MainWin win = new MainWin();
         public Form1()
         {
             InitializeComponent();
@@ -33,13 +32,7 @@ namespace dp
                     button1.Enabled = true;
                     explorer.Navigate("http://0.0.0.0/");
                     Controls.Remove(explorer);
-                    this.Hide();
-                    win.FormClosing += (bb, vv) =>
-                    {
-                        this.Close();
-                    };
-                    win.Show();
-
+                    this.Close();
 
 
                 }
@@ -71,13 +64,13 @@ namespace dp
         {
             var o = (User)(listBox1.SelectedItem);
             Program.id.Choose(o);
+            this.Close();
 
-            this.Hide();
-            win.FormClosing += (bb, vv) =>
-            {
-                this.Close();
-            };
-            win.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

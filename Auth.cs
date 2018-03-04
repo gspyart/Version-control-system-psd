@@ -23,7 +23,7 @@ namespace DropbBoxLogIn
     }
     class Auth
     {
-      
+
         protected internal class UserData
         {
             protected internal class Jsondata
@@ -31,22 +31,21 @@ namespace DropbBoxLogIn
                 public User activeuser;
                 public List<User> allusers;
             }
-           
+
             public User sender; // активный пользователь
+            public DropboxClient client; //api of active user
             private List<User> activeUsers = new List<User>(); //list of active users
-            public DropboxClient client;
+           
+
             public void AddUser(User person)
             {
                 bool l = true;
                 foreach (User o in activeUsers)
                 {
-                    if (o.token == person.token)
+                    if (o.token == person.token || o.username == person.username)
                     {
                         l = false;
-                        
                     }
-  
-                   
                 }
 
                 if (l == true)
@@ -54,7 +53,11 @@ namespace DropbBoxLogIn
                     activeUsers.Add(person);
                 }
             } //add new active user (class User)
-            public void UsersLoad()
+            public void DeleteUser(User person)
+            {
+                activeUsers.Remove(person);
+            }
+            public void UsersLoad() //ok
             {
                 if (File.Exists("userlist"))
                 {
@@ -65,8 +68,9 @@ namespace DropbBoxLogIn
                     activeUsers = info.allusers;
                     if (sender != null) client = new DropboxClient(sender.token);
                     tklist.Close();
+
                 }
-                
+
             }  //upload file of active users
             public void UsersSave()
             {
@@ -89,30 +93,47 @@ namespace DropbBoxLogIn
                     StreamWriter tklist_w = new StreamWriter("userlist");
                     tklist_w.Write(JsonConvert.SerializeObject(dd));
                     tklist_w.Close();
-                } 
+                }
             } //save file of active users
             public List<User> GetList()
             {
                 return activeUsers;
             }
         }
+
         Uri link = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=yqkotqxyx2w2v4l&redirect_uri=https://localhost/authorize");
         public UserData data = new UserData();
-       
-        public void Choose(User a)
+
+
+        public void DeleteUser(User o)
         {
-            if (a.token.Length != 0 || a.username.Length != 0) { data.sender = a;
+            data.DeleteUser(o);
+            data.UsersSave();
+        }
+        public async void Choose(User a)
+        {
+
+                data.sender = a;
                 data.client = new DropboxClient(a.token);
+                try
+                {
+                    var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
                 data.UsersSave();
             }
-            else throw new Exception("Error user");
+                catch (Dropbox.Api.DropboxException v) //если токен недействителен
+                {
+                    DeleteUser(data.sender);
+                    LogOut();
+                    Application.Exit();
+                }
+
+                   
 
         } //выбор активного пользователя со списка
-        async public Task Logined(WebBrowser ex)
+        async public Task Logined(WebBrowser ex) //ok
         {
             Uri uri_token = ex.Url;
             OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
-
             data.client = new DropboxClient(s_Token.AccessToken);
             var inf = await data.client.Users.GetCurrentAccountAsync();
             data.sender = new User(inf.Name.DisplayName, s_Token.AccessToken);
@@ -124,14 +145,17 @@ namespace DropbBoxLogIn
         {
             explorer.Navigate(link);
         } //добавить нового пользователя
+ 
         public void LogOut()
         {
             data.sender = null;
+            data.client = null;        
             data.UsersSave();
         }
         public Auth()
         {
-           data.UsersLoad();
+            data.UsersLoad();
+
         }
     }
 
