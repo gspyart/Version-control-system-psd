@@ -26,16 +26,18 @@ namespace dp
             if (id.data.sender != null)
             {
                 var form2 = new MainWin();
+                
                 Application.Run(form2);
                 
             }
             else {
                 var form1 = new Form1();
                 Application.Run(form1);
+    
             }
-           
-           
-  
+          
+
+
         }
     }
 }
