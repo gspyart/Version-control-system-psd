@@ -13,8 +13,8 @@ namespace DropbBoxLogIn
 {
     public class User
     {
-        public string username;
-        public string token;
+        public string username { get; set; }
+        public string token { get; set; }
         public User(string u, string t)
         {
             username = u;
@@ -103,6 +103,7 @@ namespace DropbBoxLogIn
         {
             if (a.token.Length != 0 || a.username.Length != 0) { data.sender = a;
                 data.client = new DropboxClient(a.token);
+                data.UsersSave();
             }
             else throw new Exception("Error user");
 

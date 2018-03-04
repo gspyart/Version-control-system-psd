@@ -74,7 +74,12 @@ namespace dp
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+            this.Enabled = false;
             Program.id.LogOut();
+            Form1 o = new Form1();
+            o.Show();
+            this.Enabled = true;
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -39,7 +39,7 @@ namespace dp
                         this.Close();
                     };
                     win.Show();
-                  
+
 
 
                 }
@@ -47,7 +47,11 @@ namespace dp
 
             explorer.Navigated += a;
 
-
+            listBox1.DisplayMember = "username";
+            foreach (User o in Program.id.data.GetList())
+            {
+                listBox1.Items.Add(o);
+            }
 
         }
 
@@ -61,6 +65,19 @@ namespace dp
             explorer.Top = 0;
             explorer.Left = 0;        
             Program.id.Login(explorer);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var o = (User)(listBox1.SelectedItem);
+            Program.id.Choose(o);
+
+            this.Hide();
+            win.FormClosing += (bb, vv) =>
+            {
+                this.Close();
+            };
+            win.Show();
         }
     }
 }
