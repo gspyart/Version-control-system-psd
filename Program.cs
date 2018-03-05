@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DropbBoxLogIn;
+
 namespace dp
 {
     static class Program
@@ -14,10 +15,12 @@ namespace dp
         /// 
 
         public static Auth id = new Auth();
+        public static Data data = new Data();
         
         [STAThread]
         static void Main()
         {
+            id.SenderChanged += () => { data.Update(id.data);  };
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWin());

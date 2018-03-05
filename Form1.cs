@@ -22,7 +22,7 @@ namespace dp
         public Form1()
         {
             InitializeComponent();
-
+           // this.FormClosing += (o, p) => { Application.Exit(); };
             WebBrowserNavigatedEventHandler a = (ab, ba) => {
 
                 if (ba.Url.AbsoluteUri.Contains("https://localhost/authorize") && !ba.Url.AbsoluteUri.Contains("dropbox.com"))
@@ -33,12 +33,10 @@ namespace dp
                     explorer.Navigate("http://0.0.0.0/");
                     Controls.Remove(explorer);
                     this.Close();
-
-
                 }
             };
-
             explorer.Navigated += a;
+
 
             listBox1.DisplayMember = "username";
             foreach (User o in Program.id.data.GetList())
