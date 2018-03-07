@@ -1,0 +1,57 @@
+﻿<Window x:Class="PSDGit.Auth"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PSDGit"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="true"
+        Title="Auth" WindowStyle="None"
+        Width="500" Height="300"
+        Background="Transparent">
+    <Window.Resources>
+       
+        
+    </Window.Resources>
+
+    <Border CornerRadius="8" BorderThickness="0" Background="Gray">
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button x:Name="PGLoginBtn"  Grid.Row="2" Grid.Column="1" Width="200px" Height="50px">
+                <Button.Content >
+                    <Grid HorizontalAlignment="Center"   >
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Grid.Column="1" >Log in</TextBlock>
+                        <Image  Source="dropbox.png"></Image>
+                      
+                    </Grid>
+                </Button.Content>
+            </Button>
+            <ListBox x:Name="PGuserlist" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <WebBrowser Visibility="Collapsed" x:Name="PGExplorer" Grid.RowSpan="3" Grid.ColumnSpan="3"></WebBrowser>
+        </Grid>
+        
+    </Border>
+
+</Window>
