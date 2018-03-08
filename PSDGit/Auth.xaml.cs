@@ -32,7 +32,6 @@ namespace PSDGit
                     this.Close();
                 }
             };
-            this.Closing += (o, e) => { Application.Current.Shutdown(); };
         }
         void PGExitFun(object sunder, EventArgs e)
         {  
