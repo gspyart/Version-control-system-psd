@@ -7,13 +7,13 @@ using System.IO;
 using System.Windows;
 using ImageMagick;
 using System.IO;
+using System.Collections.ObjectModel;
 using DropbBoxLogIn;
 namespace dp
 {
     public class Data
     {
-        
-        public List<PSDFile> UserProjects = new List<PSDFile>();
+        public ObservableCollection<PSDFile> UserProjects = new ObservableCollection<PSDFile>();
         public void AddProject(PSDFile k)
         {
             UserProjects.Add(k);
