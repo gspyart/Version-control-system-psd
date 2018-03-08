@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using DropbBoxLogIn;
 using dp;
 namespace PSDGit
@@ -21,16 +22,18 @@ namespace PSDGit
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
+      
         static public Authorization id = new Authorization();
-        static Data data = new Data();
+        static Data data = new Data(); 
         delegate void check();
         OpenFileDialog dlg = new OpenFileDialog();
-
+      
         public MainWindow()
         {
-
             dlg.Filter = "Psd files (*.psd)|*.psd";
             check p1 = () =>
             {
@@ -38,11 +41,15 @@ namespace PSDGit
                 {
                     Auth form = new Auth();
                     form.Show();
+                    form.Activate();
                 }
             };
             try
-            {
+            {      
                 InitializeComponent();
+                MWWindow.Closing += (o, e) => { Application.Current.Shutdown(); };
+                this.Show();
+                PGProjectList.ItemsSource = data.UserProjects;
                 MWWindow.IsEnabled = false;
                 PGAddProject.Click += (t, o) =>
                 {
@@ -51,7 +58,6 @@ namespace PSDGit
                 dlg.FileOk += (l, d) =>
                 {
                     PSDFile psdbuff = new PSDFile(dlg.SafeFileName, dlg.FileName, "0");
-
                     data.AddProject(psdbuff);
                 };
                 id.SenderChanged += () => { PGUsername.Text = id.data.sender.username; MWWindow.IsEnabled = true; };
@@ -59,13 +65,13 @@ namespace PSDGit
                 id.Start();
                 p1();
 
-
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
         }
+        
 
     }
 }

@@ -8,20 +8,16 @@
         x:Name="MWWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900">
+    <Window.Resources>
+      
+    </Window.Resources>
     <Grid>
         <TextBlock x:Name="PGUsername"><Run Text="Username"/></TextBlock>
         <Button x:Name="PGLogOutBtn" Content="LogOut" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="0,27,0,0"/>
-        <ListBox x:Name="FirstList" Background="Aquamarine" Margin="28,71,676,23" ItemsSource="{Binding NList}">
-            <System:Object/>
+        <ListBox DisplayMemberPath="name" IsSynchronizedWithCurrentItem="True" x:Name="PGProjectList" Background="Aquamarine" Margin="28,71,676,23">
+           
         </ListBox>
-        <ListBox Background="Gray" Margin="242,71,88,23">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-
-        </ListBox>
+      
         <Button x:Name="PGUpload" Content="Upload on dropbox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="102,27,0,0"/>
         <Button x:Name="PGAddProject" Content="Add Project" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="257,27,0,0"/>
         <ProgressBar Width="200" Height="10" Margin="406,27,286,382"/>

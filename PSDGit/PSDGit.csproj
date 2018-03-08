@@ -104,6 +104,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="materials\Ubuntu-B.ttf" />
+    <Resource Include="materials\Ubuntu-BI.ttf" />
+    <Resource Include="materials\Ubuntu-C.ttf" />
+    <Resource Include="materials\Ubuntu-L.ttf" />
+    <Resource Include="materials\Ubuntu-LI.ttf" />
+    <Resource Include="materials\Ubuntu-M.ttf" />
+    <Resource Include="materials\Ubuntu-MI.ttf" />
+    <Resource Include="materials\Ubuntu-R.ttf" />
+    <Resource Include="materials\Ubuntu-RI.ttf" />
+    <Resource Include="materials\UbuntuMono-B.ttf" />
+    <Resource Include="materials\UbuntuMono-BI.ttf" />
+    <Resource Include="materials\UbuntuMono-R.ttf" />
+    <Resource Include="materials\UbuntuMono-RI.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -115,6 +128,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="dropbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="materials\db.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

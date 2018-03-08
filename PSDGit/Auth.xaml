@@ -5,53 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSDGit"
         mc:Ignorable="d"
+        x:Name="AuthWindow"
         WindowStartupLocation="CenterScreen"
-        AllowsTransparency="true"
+        AllowsTransparency="False"
+        Background="Transparent"
         Title="Auth" WindowStyle="None"
-        Width="500" Height="300"
-        Background="Transparent">
+        ResizeMode="NoResize"
+         ShowInTaskbar="True"
+        Width="500" Height="300">
     <Window.Resources>
-       
-        
+
+
     </Window.Resources>
 
-    <Border CornerRadius="8" BorderThickness="0" Background="Gray">
+    <Border  CornerRadius="8" BorderThickness="0" Background="#1a1823">
+       
 
-
-        <Grid>
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="71*"></RowDefinition>
+                <RowDefinition Height="109*"></RowDefinition>
+                <RowDefinition Height="120*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Button x:Name="PGLoginBtn"  Grid.Row="2" Grid.Column="1" Width="200px" Height="50px">
-                <Button.Content >
-                    <Grid HorizontalAlignment="Center"   >
-                        <Grid.ColumnDefinitions >
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock VerticalAlignment="Center" Grid.Column="1" >Log in</TextBlock>
-                        <Image  Source="dropbox.png"></Image>
-                      
-                    </Grid>
-                </Button.Content>
-            </Button>
-            <ListBox x:Name="PGuserlist" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+            
+              
+                    <Rectangle Opacity="0.1" Grid.ColumnSpan="3" Grid.RowSpan="3">
+                        <Rectangle.Fill>
+                            <RadialGradientBrush Center="0.5,1" GradientOrigin="0.5,1" >
+                        <GradientStop Color="#0161fd" Offset="0" />
+                    
+                        <GradientStop Color="#00FFFFFF" Offset="1"/>
+                    </RadialGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+
+            <Border  Background="#0062ff"  Grid.Row="2" Grid.Column="1" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34" Margin="68,42,68,44" Width="164" >
+                <Button x:Name="PGLoginBtn" BorderBrush="Transparent" Background="Transparent"  >
+                    <Button.Content >
+                        <Grid HorizontalAlignment="Center" Width="160px" Height="30" >
+                            <Grid.ColumnDefinitions >
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="#fff" FontFamily="/PSDGit;component/NewFolder1/#Ubuntu Light" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"  Grid.Column="0" >Log in Dropbox</TextBlock>
+                            <Image Height="16" Source="materials/db.png"/>
+
+                        </Grid>
+                    </Button.Content>
+                </Button>
+            </Border>
+            <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1" Foreground="#46435b" Margin="0,94,0,10" Height="16" >PhotoshopGit</TextBlock>
+            <TextBlock FontSize="38" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Grid.Column="1" Foreground="#fff" Margin="0,13,0,52" FontFamily="/PSDGit;component/materials/#Ubuntu Light" Height="44" Grid.Row="1">HI bro!</TextBlock>
+            <TextBlock  VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Foreground="#46435b" Margin="0,73,0,4" Height="32">It is a long established fact that a reader will be 
+distracted by the readable content</TextBlock>
+            
+
+            <ListBox BorderBrush="Transparent" Background="Transparent" x:Name="PGuserlist" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Height="40" >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+                <ListBox.Style >
+                    <Style>
+                        <Setter Property="ListBoxItem.Foreground" Value="#ffffff"></Setter>
+                        <Setter Property="ListBoxItem.Margin" Value="10 10 10 10"></Setter>
+                    </Style>
+                </ListBox.Style>
             </ListBox>
-            <WebBrowser Visibility="Collapsed" x:Name="PGExplorer" Grid.RowSpan="3" Grid.ColumnSpan="3"></WebBrowser>
+            <WebBrowser Visibility="Collapsed"  x:Name="PGExplorer" Grid.RowSpan="3" Grid.ColumnSpan="3"></WebBrowser>
+            <Border Background="#0062ff" BorderBrush="Transparent" VerticalAlignment="top" Grid.Column="2" CornerRadius="0 6 0 50" Width="65" Height="45" HorizontalAlignment="right">
+                <Button Background="Transparent" BorderBrush="Transparent" Click="PGExitFun" x:Name="PGExit"   FontSize="26pt" Content="-" Margin="10,-10,-10,10"></Button>
+            </Border>
         </Grid>
-        
+
     </Border>
 
 </Window>
