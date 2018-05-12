@@ -1,0 +1,136 @@
+﻿<Window x:Class="PSDGitFinal.AuthorizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PSDGitFinal"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        Title="MainWindow" Height="320" Width="360">
+
+
+    <Grid>
+
+        <!-- Opacity mask for corners on grid -->
+        <Border x:Name="Container" Background="Beige"
+                                CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
+
+        <!-- Window border and dropshadown
+        <Border CornerRadius="10"
+            Background="Red">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
+            </Border.Effect>
+        </Border>
+-->
+        <!-- The main window content -->
+        <Grid>
+
+            <!-- Corner clipping -->
+            <Grid.OpacityMask>
+                <VisualBrush Visual="{Binding ElementName=Container}" />
+            </Grid.OpacityMask>
+            <Grid Panel.ZIndex="1" Background="#1e1c29">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Label Margin="0 25 0 0" HorizontalAlignment="Center" Foreground="#46435b">PhotoshopGit</Label>
+                    <StackPanel Margin="100 0 0 0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="Button_Click" Width="40" Height="40" Background="#0062ff" VerticalAlignment="Top">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border VerticalAlignment="{TemplateBinding VerticalAlignment}" Background="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="0 0 0 50">
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                    <TextBlock FontSize="45" Margin="0 20 0 0" HorizontalAlignment="Center" Foreground="White">HI <Span Foreground="Blue">bro</Span>!</TextBlock>
+                    <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>
+                    <Button  Margin="0 30 0 0"  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="140" Height="30">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border CornerRadius="11"  Background="{TemplateBinding Background}">
+                                    <StackPanel>
+                                        <TextBlock Margin="0 7 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Log In Dropbox" />
+                                    </StackPanel>
+                                </Border>
+
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button BorderThickness="0" Margin="0 15 0 0" Background="Transparent" Foreground="#46435b" >
+                        <TextBlock TextDecorations="Underline" Text="Use local repository" />
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>
+<!--
+    <Border BorderThickness="12">
+        <Grid>
+            <Border x:Name="Container" Background="#1e1c29" CornerRadius="6 6 6 6">
+                <Grid>
+                    <Grid.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=Container}" />
+                    </Grid.OpacityMask>
+                    <Grid Panel.ZIndex="1" Background="#1e1c29">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Label Margin="0 25 0 0" HorizontalAlignment="Center" Foreground="#46435b">PhotoshopGit</Label>
+                            <StackPanel Margin="100 0 0 0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Click="Button_Click" Width="40" Height="40" Background="#0062ff" VerticalAlignment="Top">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Border VerticalAlignment="{TemplateBinding VerticalAlignment}" Background="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="0 0 0 50">
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                            <TextBlock FontSize="45" Margin="0 20 0 0" HorizontalAlignment="Center" Foreground="White">HI <Span Foreground="Blue">bro</Span>!</TextBlock>
+                            <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>
+                            <Button  Margin="0 30 0 0"  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="140" Height="30">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Border CornerRadius="11"  Background="{TemplateBinding Background}">
+                                            <StackPanel>
+                                                <TextBlock Margin="0 7 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Log In Dropbox" />
+                                            </StackPanel>
+                                        </Border>
+
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button BorderThickness="0" Margin="0 15 0 0" Background="Transparent" Foreground="#46435b" >
+                                <TextBlock TextDecorations="Underline" Text="Use local repository" />
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
+-->
