@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace PSDGitFinal
 {
     /// <summary>
@@ -13,5 +14,6 @@ namespace PSDGitFinal
     /// </summary>
     public partial class App : Application
     {
+        internal static DropbBoxLogIn.Auth Authorization = new DropbBoxLogIn.Auth();
     }
 }

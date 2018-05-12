@@ -25,8 +25,8 @@ namespace PSDGitFinal
         {
             InitializeComponent();
             this.IsEnabled = false;
-            AuthorizationWindow kek = new AuthorizationWindow();
-            kek.Show();
+            AuthorizationWindow AuthWindow = new AuthorizationWindow();
+            AuthWindow.Show();
         }
 
     }

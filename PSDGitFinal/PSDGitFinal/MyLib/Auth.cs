@@ -8,6 +8,17 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net;
 using Dianoga.ImageMagick;
+
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
 namespace DropbBoxLogIn
 {
     public class User
@@ -71,7 +82,6 @@ namespace DropbBoxLogIn
                     activeUsers = info.allusers;
                     if (sender != null) client = new DropboxClient(sender.token);
                     tklist.Close();
-
                 }
 
             }  //upload file of active users
@@ -134,11 +144,11 @@ namespace DropbBoxLogIn
                    
 
         } //выбор активного пользователя со списка
-        /*
+       
         async public Task Logined(WebBrowser ex) //ok
         {
            
-            Uri uri_token = ex.Url;
+            Uri uri_token = ex.Source;
             OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
             data.client = new DropboxClient(s_Token.AccessToken);
             var inf = await data.client.Users.GetCurrentAccountAsync();
@@ -152,7 +162,7 @@ namespace DropbBoxLogIn
             explorer.Navigate(link);
         } //добавить нового пользователя
 
-        */
+        
         public void LogOut()
         {
             data.sender = null;
