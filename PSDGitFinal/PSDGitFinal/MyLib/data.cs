@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Windows.Forms;
-using ImageMagick;
+using Dianoga.ImageMagick;
 using System.IO;
 using DropbBoxLogIn;
 namespace dp

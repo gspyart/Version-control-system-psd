@@ -7,8 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
 using System.Net;
-using ImageMagick;
-
+using Dianoga.ImageMagick;
 namespace DropbBoxLogIn
 {
     public class User
@@ -129,12 +128,13 @@ namespace DropbBoxLogIn
                 {
                     DeleteUser(data.sender);
                     LogOut();
-                    Application.Exit();
+                    // Application.Exit();
                 }
 
                    
 
         } //выбор активного пользователя со списка
+        /*
         async public Task Logined(WebBrowser ex) //ok
         {
            
@@ -151,6 +151,8 @@ namespace DropbBoxLogIn
         {
             explorer.Navigate(link);
         } //добавить нового пользователя
+
+        */
         public void LogOut()
         {
             data.sender = null;
