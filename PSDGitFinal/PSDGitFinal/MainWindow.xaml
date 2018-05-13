@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSDGitFinal"
+        xmlns:datalocal="clr-namespace:dp"
         mc:Ignorable="d"
         x:Name="AppWindow"
         WindowStyle="None"
@@ -102,7 +103,7 @@
                                         <!-- Window Buttons -->
                                         <Grid Grid.Column="1">
                                             <StackPanel Orientation="Horizontal">
-                                                <Button  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="130" Height="20">
+                                                <Button WindowChrome.IsHitTestVisibleInChrome="True" Click="Open_dialog"  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="130" Height="20">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <Border CornerRadius="10" Background="{TemplateBinding Background}">
@@ -138,7 +139,7 @@
                                                 </StackPanel>
                                                 <StackPanel  Orientation="Horizontal">
                                                     <Button Command="{Binding MinimizeCommand}" Style="{StaticResource WindowControlButton}" Content="_" />
-                                                    <Button Command="{Binding CloseCommand}"    Style="{StaticResource WindowCloseButton}"  Content="X" />
+                                                    <Button Click="Button_Click" Command="{Binding CloseCommand}"    Style="{StaticResource WindowCloseButton}"  Content="X" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </Grid>
@@ -213,47 +214,10 @@
                         <Label Grid.Column="1" Foreground="#46435b" Content="DATE" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                     </Grid>
                 </StackPanel>
-                <ListBox  x:Name="Tagging" BorderThickness="0" Background="#1a1823" Grid.Row="1" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="18" />
-                                    <ColumnDefinition Width = "*" />
-                                </Grid.ColumnDefinitions >
-                                <TextBlock x:Name="aaaaa" Grid.Column="0" Text="{Binding TagSource}" Foreground="White" HorizontalAlignment="Center" Margin="0 14 0 0" FontSize="15"/>
-                                <ListBox  Background="#1a1823" x:Name="ProjectWithinTag" Grid.Column="1" ItemsSource="{Binding Coll}" BorderThickness="0">
-
-                                    <ListBox.ItemTemplate>
-
-                                        <DataTemplate>
-
-                                            <Grid Height="40">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width = "3" />
-                                                    <ColumnDefinition Width="0.6*" />
-                                                    <ColumnDefinition Width = "0.4*" />
-                                                </Grid.ColumnDefinitions >
-                                                <Border x:Name="Borderr" Grid.Column="0" BorderThickness="0"/>
-                                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text= "{Binding}" Foreground= "White" />
-                                                <TextBlock VerticalAlignment="Center" Grid.Column= "2" Text= "{Binding}" Foreground= "White" />
-                                            </Grid >
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
-                                                    <Setter TargetName="Borderr" Property="Background" Value="#0062ff"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="False">
-                                                    <Setter TargetName="Borderr" Property="Background" Value="#1a1823"/>
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate >
-                                    </ListBox.ItemTemplate >
-
-                                </ListBox >
-                            </Grid >
-
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                <ListBox ItemsSource="{Binding Data.UserProjects}" DisplayMemberPath="name"  x:Name="Tagging" BorderThickness="0" Background="#1a1823" Grid.Row="1" >
+                    
+                    <ListBoxItem>kek</ListBoxItem>
+                    <ListBoxItem>kek2</ListBoxItem>
                 </ListBox>
 
 

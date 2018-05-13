@@ -5,65 +5,53 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Dianoga.ImageMagick;
+using System.Collections.ObjectModel;
 using System.IO;
 using DropbBoxLogIn;
+using System.IO.Compression;
+using System.ComponentModel;
 namespace dp
 {
-    class Data
+    class Data: INotifyPropertyChanged //хранимая информации о всех проектах
     {
-        
-        public List<PSDFile> UserProjects = new List<PSDFile>();
-        public void DownloadFiles()
-        {
+        public ObservableCollection<PSDProject> UserProjects { get; set; }
 
-        }
-        public void Unload()
+        public void AddProject(PSDProject b)
         {
-
+            UserProjects.Add(b);
+            PropertyChanged(this, new PropertyChangedEventArgs(""));
         }
         public Data()
         {
-            Directory.CreateDirectory("data");
-        }
-        public void Update(Auth.UserData userData)
-        {
-
+            UserProjects = new ObservableCollection<PSDProject>();
+            
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
 
 
-    class Save
+    class PSDProject //проект
     {
-        string name { get; set; }
-        public Save()
-        {
-            name = "commit_test";
-
-        }
-    }
-
-    class PSDFile
-    {
-        static int savenum = 0;
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
         public string name { get; set; } //название проекта
         public string dir { get; set; } //путь проекта
         public string id { get; set; } //уникальный id проекта
         public List<Save> commits = new List<Save>(); //список коммитов проекта
-        public PSDFile(string n, string d, string v)
+        public PSDProject(string n, string d, string v)
         {
             name = n;
             dir = d;
             id = v;
-            looks.Path = dir;
-            looks.EnableRaisingEvents = true;
-            Directory.CreateDirectory("data/" + name);
+         //   looks.Path = dir;
+         //   looks.EnableRaisingEvents = true;
+          //  Directory.CreateDirectory("data/" + id);
         }
 
         public void AddCommit(Save b)
         {
+            commits.Add(new Save());
             /*
             MagickImage image = new MagickImage();
             MagickReadSettings settings = new MagickReadSettings();
@@ -83,6 +71,21 @@ namespace dp
 
         }
     }
+
+    class Save //коммит
+    {
+        string message { get; set; }
+        public Save(string m)
+        {
+            message = m;
+        }
+        public Save()
+        {
+            message = "commit_test";
+
+        }
+    }
+
 
 }
 

@@ -15,5 +15,6 @@ namespace PSDGitFinal
     public partial class App : Application
     {
         internal static DropbBoxLogIn.Auth Authorization = new DropbBoxLogIn.Auth();
+        internal static dp.Data Data = new dp.Data();
     }
 }

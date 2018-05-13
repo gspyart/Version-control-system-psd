@@ -39,7 +39,7 @@ namespace DropbBoxLogIn
         public delegate void none();
         
 
-        protected internal class UserData
+        protected internal class UserData   
         {
             
             protected internal class Jsondata
