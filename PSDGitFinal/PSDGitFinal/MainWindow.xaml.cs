@@ -23,13 +23,15 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal PSDProject selected;
+
         delegate void kek();
         
         public MainWindow()
         {
             InitializeComponent();
-            App.Data.PropertyChanged += (a, b) => { MessageBox.Show("kek"); };
-
+            ArtistText.DataContext = this;
+            Tagging.DataContext = App.Data;
             //this.IsEnabled = false;
             //AuthorizationWindow AuthWindow = new AuthorizationWindow();
             //AuthWindow.Show();
@@ -42,17 +44,20 @@ namespace PSDGitFinal
         private void Open_dialog(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Картинки(*.PSD;*.JPEG)|*.PSD;*.JPEG" + "|Все файлы (*.*)|*.* ";
+            openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                MessageBox.Show("choosen");
-                App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName, "kek"));
-
-               
+                App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName, openFileDialog.FileName, "uncorrect"));
+                // когда будет готово App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName, App.Authorization.data.sender.username));  
             }
             
         }
+
+        private void Tagging_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            commits.DataContext = (PSDProject)Tagging.SelectedItem;
+        }
     }
-}
+}   

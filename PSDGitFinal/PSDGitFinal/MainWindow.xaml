@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSDGitFinal"
-        xmlns:datalocal="clr-namespace:dp"
         mc:Ignorable="d"
         x:Name="AppWindow"
         WindowStyle="None"
@@ -214,10 +213,7 @@
                         <Label Grid.Column="1" Foreground="#46435b" Content="DATE" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                     </Grid>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding Data.UserProjects}" DisplayMemberPath="name"  x:Name="Tagging" BorderThickness="0" Background="#1a1823" Grid.Row="1" >
-                    
-                    <ListBoxItem>kek</ListBoxItem>
-                    <ListBoxItem>kek2</ListBoxItem>
+                <ListBox SelectionChanged="Tagging_SelectionChanged" Foreground="#fff"  ItemsSource="{Binding UserProjects}"  DisplayMemberPath="name"  x:Name="Tagging" BorderThickness="0" Background="#1a1823" Grid.Row="1" >
                 </ListBox>
 
 
@@ -233,35 +229,20 @@
                             <VisualBrush Visual="{Binding ElementName=ProjectMask}" />
                         </Grid.OpacityMask>
                         <StackPanel Margin="10 0 0 0" Background="AliceBlue" VerticalAlignment="Top">
-                            <TextBlock FontSize="19" Foreground="Black">Hello</TextBlock>
-                            <TextBlock Margin="0 7 0 0" Foreground="MediumPurple">Artist: Hui</TextBlock>
+                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.name, Mode=TwoWay}"  FontSize="19" Foreground="Black">Hello</TextBlock>
+                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.owner, Mode=TwoWay}" x:Name="ArtistText" Margin="0 7 0 0" Foreground="MediumPurple">Artist: Hui</TextBlock>
                         </StackPanel>
                     </Grid>
                 
                 </Grid>
                 <Label Margin="0 15 0 0" Foreground="Gray">Screenshots</Label>
-                <Button Width="100" Height="90">
-                    <Button.OpacityMask>
-                        <LinearGradientBrush StartPoint="0, 0" EndPoint="0,1">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStop Offset="0" Color="White"/>
-                                <GradientStop Offset="1" Color="Transparent"/>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-                    </Button.OpacityMask>
-                    
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button" >
-                            <Border Background="#1e1c29" CornerRadius="10">
-                                <ContentPresenter />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                    <Button.BitmapEffect>
-                        <DropShadowBitmapEffect Color="Pink" ShadowDepth="8" Softness="0"/>
-                    </Button.BitmapEffect>
-                    <Button/>
-                </Button>
+                <ListBox x:Name="commits" ItemsSource="{Binding Commits}" DisplayMemberPath="message">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
             </StackPanel>
         </Grid>
     </Grid>

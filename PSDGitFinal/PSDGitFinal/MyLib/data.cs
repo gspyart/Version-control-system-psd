@@ -12,14 +12,14 @@ using System.IO.Compression;
 using System.ComponentModel;
 namespace dp
 {
-    class Data: INotifyPropertyChanged //хранимая информации о всех проектах
+    class Data
     {
         public ObservableCollection<PSDProject> UserProjects { get; set; }
 
         public void AddProject(PSDProject b)
         {
             UserProjects.Add(b);
-            PropertyChanged(this, new PropertyChangedEventArgs(""));
+     
         }
         public Data()
         {
@@ -27,7 +27,6 @@ namespace dp
             
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 
 
@@ -37,21 +36,22 @@ namespace dp
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
         public string name { get; set; } //название проекта
         public string dir { get; set; } //путь проекта
-        public string id { get; set; } //уникальный id проекта
-        public List<Save> commits = new List<Save>(); //список коммитов проекта
+        public string owner { get; set; } //уникальный id проекта
+        public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
         public PSDProject(string n, string d, string v)
         {
+            Commits = new ObservableCollection<Save>();
             name = n;
             dir = d;
-            id = v;
-         //   looks.Path = dir;
-         //   looks.EnableRaisingEvents = true;
-          //  Directory.CreateDirectory("data/" + id);
+            owner = v;
+            Directory.CreateDirectory("data/" + owner + "/" + name);
+            //   looks.Path = dir;
+            //   looks.EnableRaisingEvents = true;
+
         }
 
         public void AddCommit(Save b)
         {
-            commits.Add(new Save());
             /*
             MagickImage image = new MagickImage();
             MagickReadSettings settings = new MagickReadSettings();
@@ -61,7 +61,7 @@ namespace dp
             image.Write("data/" + name + "/" + savenum.ToString() + "/" +"preview.jpg" );
             PSDFile.savenum++;
             */
-            commits.Add(b);
+            Commits.Add(b);
 
 
         }  //добавить коммит
@@ -74,10 +74,12 @@ namespace dp
 
     class Save //коммит
     {
-        string message { get; set; }
+        public string message { get; set; }
+        public int number { get; set; }
         public Save(string m)
         {
             message = m;
+            number = 0;
         }
         public Save()
         {

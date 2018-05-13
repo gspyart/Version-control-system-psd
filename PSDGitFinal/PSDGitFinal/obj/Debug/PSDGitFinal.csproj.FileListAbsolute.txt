@@ -37,3 +37,5 @@ D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\nQuan
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\System.Data.SQLite.xml
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\System.Data.SQLite.dll.config
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\PSDGitFinal.csproj.CopyComplete
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\Magick.NET-Q16-AnyCPU.dll
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\Magick.NET-Q16-AnyCPU.xml
