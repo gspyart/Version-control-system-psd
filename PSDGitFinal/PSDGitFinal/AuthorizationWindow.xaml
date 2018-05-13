@@ -57,7 +57,7 @@
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center">
                     <TextBlock FontSize="45" Margin="0 20 0 0" HorizontalAlignment="Center" Foreground="White">HI <Span Foreground="Blue">bro</Span>!</TextBlock>
                     <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>
-                    <Button  Margin="0 30 0 0"  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="140" Height="30">
+                    <Button Click="Button_Click_1"  Margin="0 30 0 0"  Grid.Column="1" Foreground="Black" Background="#0062ff" Width="140" Height="30">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border CornerRadius="11"  Background="{TemplateBinding Background}">

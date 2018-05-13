@@ -39,3 +39,6 @@ D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\Syste
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\PSDGitFinal.csproj.CopyComplete
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\Magick.NET-Q16-AnyCPU.dll
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\Magick.NET-Q16-AnyCPU.xml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\browser.g.cs
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\browser.baml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\database.db

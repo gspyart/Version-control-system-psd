@@ -131,7 +131,7 @@ namespace DropbBoxLogIn
                 try
                 {
                     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
-                SenderChanged();
+                if (SenderChanged != null)  SenderChanged();
                 data.UsersSave();
             }
                 catch (Dropbox.Api.DropboxException v) //если токен недействителен

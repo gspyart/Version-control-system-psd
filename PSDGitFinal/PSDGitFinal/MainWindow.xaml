@@ -185,6 +185,7 @@
                     <RowDefinition Height="0.83*"/>
 
                 </Grid.RowDefinitions>
+
                 <StackPanel Grid.Row="0">
                     <TextBox CaretBrush="Blue" Foreground="#46435b" Margin="5 10 5 8"  Grid.Row="2" x:Name="SearchString">
                         <TextBox.Template>
@@ -216,7 +217,7 @@
                 <ListBox SelectionChanged="Tagging_SelectionChanged" Foreground="#fff"  ItemsSource="{Binding UserProjects}"  DisplayMemberPath="name"  x:Name="Tagging" BorderThickness="0" Background="#1a1823" Grid.Row="1" >
                 </ListBox>
 
-
+             
 
 
             </Grid>
@@ -244,7 +245,10 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
             </StackPanel>
+            
         </Grid>
+        <Button WindowChrome.IsHitTestVisibleInChrome="True" Click="Button_logout" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Log Out</Button>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="left" x:Name="UsernameText"  Foreground="#fff" Grid.Row="1">Username</TextBlock>
     </Grid>
 
 </Window>

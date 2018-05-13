@@ -9,11 +9,17 @@ using System.Collections.ObjectModel;
 using System.IO;
 using DropbBoxLogIn;
 using System.IO.Compression;
+using System.Data.SQLite;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Data.Sql;
 using System.ComponentModel;
+using System.Data;
 namespace dp
 {
     class Data
     {
+
         public ObservableCollection<PSDProject> UserProjects { get; set; }
 
         public void AddProject(PSDProject b)
@@ -24,9 +30,22 @@ namespace dp
         public Data()
         {
             UserProjects = new ObservableCollection<PSDProject>();
-            
         }
+        public DataTable DatabaseLoad()
+        {
+            DataTable dTable = new DataTable();
 
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=database.db; Version=3;");
+            m_dbConn.Open();
+
+            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            m_sqlCmd.CommandText = "Select * from Projects";
+           SQLiteDataReader data = m_sqlCmd.ExecuteReader();
+            dTable = data.GetSchemaTable();
+            m_dbConn.Close();
+            return dTable;
+
+        }
     }
 
 
@@ -44,7 +63,7 @@ namespace dp
             name = n;
             dir = d;
             owner = v;
-            Directory.CreateDirectory("data/" + owner + "/" + name);
+            Directory.CreateDirectory("data/" + owner + "/" + name.Remove(name.Length-4));
             //   looks.Path = dir;
             //   looks.EnableRaisingEvents = true;
 

@@ -13,7 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SQLite;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Data.Sql;
 using System.IO;
+using System.Data;
 using Microsoft.Win32;
 using dp;
 namespace PSDGitFinal
@@ -23,6 +27,7 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal DataTable ProjectsTable;
         internal PSDProject selected;
 
         delegate void kek();
@@ -32,9 +37,23 @@ namespace PSDGitFinal
             InitializeComponent();
             ArtistText.DataContext = this;
             Tagging.DataContext = App.Data;
-            //this.IsEnabled = false;
-            //AuthorizationWindow AuthWindow = new AuthorizationWindow();
-            //AuthWindow.Show();
+
+            if (App.Authorization.data.sender == null)
+            {
+                this.IsEnabled = false;
+                AuthorizationWindow AuthWindow = new AuthorizationWindow();
+                AuthWindow.Show();
+            }
+            else
+            {
+                UsernameText.Text = App.Authorization.data.sender.username;
+            }
+            //else
+            //{
+            //    ProjectsTable =  App.Data.DatabaseLoad();
+            //    MessageBox.Show(ProjectsTable.Select().ToString());
+            //}
+          
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -49,8 +68,8 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName, openFileDialog.FileName, "uncorrect"));
-                // когда будет готово App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName, App.Authorization.data.sender.username));  
+            
+              App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName, App.Authorization.data.sender.username));  
             }
             
         }
@@ -58,6 +77,16 @@ namespace PSDGitFinal
         private void Tagging_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             commits.DataContext = (PSDProject)Tagging.SelectedItem;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_logout(object sender, RoutedEventArgs e)
+        {
+            App.Authorization.LogOut();
         }
     }
 }   

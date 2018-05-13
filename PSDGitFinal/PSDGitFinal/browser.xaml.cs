@@ -11,30 +11,28 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Threading.Tasks;
 
 namespace PSDGitFinal
 {
     /// <summary>
-    /// Логика взаимодействия для Window1.xaml
+    /// Логика взаимодействия для browser.xaml
     /// </summary>
-    public partial class AuthorizationWindow : Window
+    public partial class browser : Window
     {
-        public AuthorizationWindow()
+        public browser()
         {
             InitializeComponent();
+            Browser.Navigated += (a,b) =>
+            {
+                if (Browser.Source.AbsoluteUri.Contains("access_token"))
+                {
+
+                   App.Authorization.Logined(Browser);
+                   this.Close();
+                }
+            };
+            App.Authorization.Login(Browser);
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            browser web = new browser();
-            web.Show();
-
-        }
-
     }
 }
