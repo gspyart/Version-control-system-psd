@@ -15,6 +15,7 @@ using System.Data.SqlTypes;
 using System.Data.Sql;
 using System.ComponentModel;
 using System.Data;
+using PSDGitFinal;
 namespace dp
 {
     class Data
@@ -64,10 +65,17 @@ namespace dp
             dir = d;
             owner = v;
             Directory.CreateDirectory("data/" + owner + "/" + name.Remove(name.Length-4));
-            //   looks.Path = dir;
-            //   looks.EnableRaisingEvents = true;
-
+            looks.Path = d; 
+            looks.EnableRaisingEvents = true;
+            looks.Changed += (a, b) =>
+            {
+                this.AddCommit(new Save());
+                looks.EnableRaisingEvents = false;
+                looks.EnableRaisingEvents = true;
+            };
+        
         }
+        
 
         public void AddCommit(Save b)
         {
@@ -80,8 +88,11 @@ namespace dp
             image.Write("data/" + name + "/" + savenum.ToString() + "/" +"preview.jpg" );
             PSDFile.savenum++;
             */
-            Commits.Add(b);
-
+           
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                Commits.Add(b);
+            });
 
         }  //добавить коммит
 

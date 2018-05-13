@@ -28,16 +28,14 @@ namespace PSDGitFinal
     public partial class MainWindow : Window
     {
         internal DataTable ProjectsTable;
-        internal PSDProject selected;
-
+        PSDProject selected;
         delegate void kek();
         
         public MainWindow()
         {
             InitializeComponent();
-            ArtistText.DataContext = this;
             Tagging.DataContext = App.Data;
-
+            commits.DataContext = selected;
             if (App.Authorization.data.sender == null)
             {
                 this.IsEnabled = false;
@@ -68,15 +66,16 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-            
-              App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName, App.Authorization.data.sender.username));  
+              App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName.Remove(openFileDialog.FileName.Length- openFileDialog.SafeFileName.Length), App.Authorization.data.sender.username));  
+              
             }
             
         }
 
         private void Tagging_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            commits.DataContext = (PSDProject)Tagging.SelectedItem;
+            selected = (PSDProject)Tagging.SelectedItem;
+            commits.DataContext = selected;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
