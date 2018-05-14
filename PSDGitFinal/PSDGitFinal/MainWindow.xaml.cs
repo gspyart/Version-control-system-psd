@@ -32,7 +32,7 @@ namespace PSDGitFinal
         
         public MainWindow()
         {
-            App.Data.DatabaseLoad(App.Authorization.data.sender);
+
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             {
                 this.IsEnabled = true;
@@ -55,6 +55,7 @@ namespace PSDGitFinal
             else
             {
                 UsernameText.Text = App.Authorization.data.sender.username;
+                App.Data.DatabaseLoad(App.Authorization.data.sender);
             }
             //else
             //{
