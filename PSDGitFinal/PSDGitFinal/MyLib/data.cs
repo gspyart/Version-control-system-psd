@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 using System.Threading.Tasks;
 using System.IO;
 using Dianoga.ImageMagick;
@@ -12,6 +14,9 @@ using System.IO.Compression;
 using System.Data.SQLite;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using Dropbox.Api;
+using Dropbox.Api.Users;
+using Newtonsoft.Json;
 using System.Data.Sql;
 using System.ComponentModel;
 using System.Data;
@@ -31,20 +36,33 @@ namespace dp
         {
             UserProjects = new ObservableCollection<PSDProject>();
         }
-        public DataTable DatabaseLoad()
+        public void DatabaseLoad(User user)
         {
-            DataTable dTable = new DataTable();
-
-            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=database.db; Version=3;");
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
             m_dbConn.Open();
 
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
             m_sqlCmd.CommandText = "Select * from Projects";
-           SQLiteDataReader data = m_sqlCmd.ExecuteReader();
-            dTable = data.GetSchemaTable();
+            SQLiteDataReader data = m_sqlCmd.ExecuteReader();
+            while(data.Read())
+            {
+                if (data.GetString(3) == user.id) AddProject(new PSDProject(data.GetInt32(0),data.GetString(1), data.GetString(2), data.GetString(3)));
+            }
             m_dbConn.Close();
-            return dTable;
 
+        }
+        public void DatabaseInsert(PSDProject a) {
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+            m_dbConn.Open();
+            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            m_sqlCmd.CommandText = "INSERT INTO Projects (project_name, dir, owner) values ('" + a.name + "','" +a.dir +"','" + a.owner_id +"')";
+            m_sqlCmd.ExecuteNonQuery(); 
+            m_dbConn.Close();
+        }
+
+        public void DatabaseDelete(int id)
+        {
+           
         }
     }
 
@@ -54,17 +72,19 @@ namespace dp
     {
         
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
+        public int id { get; set; }
         public string name { get; set; } //полное название файла
         public string dir { get; set; } //путь проекта на конце /
-        public string owner { get; set; } //имя пользователя проекта
+        public string owner_id { get; set; } //имя пользователя проекта
         public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
-        public PSDProject(string n, string d, string v)
+        public PSDProject(int i, string n, string d, string v)
         {
+            id = i;
             Commits = new ObservableCollection<Save>();
             name = n;
             dir = d;
-            owner = v;
-            Directory.CreateDirectory("data/" + owner + "/" + name.Remove(name.Length-4));
+            owner_id = v;
+            Directory.CreateDirectory("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length-4)); //замена недопустимых символов в пути
             looks.Path = d; 
             looks.EnableRaisingEvents = true;
             looks.Created += (a, b) =>
@@ -73,7 +93,7 @@ namespace dp
                
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
-                var t = Task.Run(() => File.Copy(dir + n, "data/" + owner + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd"));
+                var t = Task.Run(() => File.Copy(dir + n, "data/" + owner_id + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd"));
                 t.Wait();
             };
         

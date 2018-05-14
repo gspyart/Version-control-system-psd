@@ -43,6 +43,7 @@ namespace PSDGitFinal
             };
 
             InitializeComponent();
+            App.Data.DatabaseLoad(App.Authorization.data.sender);
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;
           
@@ -74,9 +75,10 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-              //добавление проектач
-              App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName.Remove(openFileDialog.FileName.Length- openFileDialog.SafeFileName.Length), App.Authorization.data.sender.username));  
-              
+                //добавление проектач
+                PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
+                App.Data.AddProject(b);
+                App.Data.DatabaseInsert(b);
             }
             
         }
@@ -90,6 +92,10 @@ namespace PSDGitFinal
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void Delete_project(object sender, RoutedEventArgs e)
+        {
+           
         }
 
         private void Button_logout(object sender, RoutedEventArgs e)

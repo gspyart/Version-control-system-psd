@@ -115,11 +115,11 @@
                                                     </Button.Template>
 
                                                 </Button>
-                                                <Button Margin="25 0 25 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
+                                                <Button Click="Delete_project" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="25 0 25 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <StackPanel>
-                                                                <TextBlock Foreground="#46435b" VerticalAlignment="Center" HorizontalAlignment="Center" Text="FAQ" TextDecorations="Underline" />
+                                                                <TextBlock  Foreground="#46435b" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Delete project" TextDecorations="Underline" />
                                                             </StackPanel>
                                                         </ControlTemplate>
                                                     </Button.Template>
@@ -231,7 +231,7 @@
                         </Grid.OpacityMask>
                         <StackPanel Margin="10 0 0 0" Background="AliceBlue" VerticalAlignment="Top">
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.name, Mode=TwoWay}"  FontSize="19" Foreground="Black">Hello</TextBlock>
-                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.owner, Mode=TwoWay}" x:Name="ArtistText" Margin="0 7 0 0" Foreground="MediumPurple">Artist: Hui</TextBlock>
+                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.dir, Mode=TwoWay}" x:Name="ArtistText" Margin="0 7 0 0" Foreground="MediumPurple">Artist: Hui</TextBlock>
                         </StackPanel>
                     </Grid>
                 

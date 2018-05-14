@@ -23,11 +23,12 @@ namespace DropbBoxLogIn
 {
     public class User
     {
+        public string id { get; set; }
         public string username { get; set; }
         public string token { get; set; }
-        public User(string u, string t)
+        public User(string i, string u, string t)
         {
-            
+            id = i;
             username = u;
             token = t;
         }
@@ -53,10 +54,11 @@ namespace DropbBoxLogIn
             private List<User> activeUsers = new List<User>(); //list of active users
             public void AddUser(User person)
             {
+                
                 bool l = true;
                 foreach (User o in activeUsers)
                 {
-                    if (o.token == person.token || o.username == person.username)
+                    if (o.token == person.token || o.id == person.id)
                     {
                         l = false;
                     }
@@ -152,7 +154,7 @@ namespace DropbBoxLogIn
             OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
             data.client = new DropboxClient(s_Token.AccessToken);
             var inf = await data.client.Users.GetCurrentAccountAsync();
-            User newuser = new User(inf.Name.DisplayName, s_Token.AccessToken);
+            User newuser = new User(inf.AccountId,inf.Name.DisplayName, s_Token.AccessToken);
             data.AddUser(newuser);
             Choose(newuser);
             data.UsersSave();

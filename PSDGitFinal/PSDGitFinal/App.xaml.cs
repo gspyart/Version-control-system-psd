@@ -21,12 +21,8 @@ namespace PSDGitFinal
         {
             DropbBoxLogIn.Auth.SenderChanged += () => {}; //событие происходящие при авторизации нового пользователя (надо объъявить до вызова конструктора)
             Authorization = new DropbBoxLogIn.Auth();
-             Data = new dp.Data();
+            Data = new dp.Data();
      
         }
-
-
-
-
     }
 }
