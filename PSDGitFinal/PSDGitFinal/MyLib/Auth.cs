@@ -173,6 +173,15 @@ namespace DropbBoxLogIn
             logout();
         }
 
+        /// <summary>
+        /// Проверка есть ли активный пользователь
+        /// </summary>
+        /// <returns></returns>
+        public bool isOnline() 
+        {
+            if (data.sender != null) return true;
+            return false;
+        }
         //Dropbox Api
         public void UploadAll()
         {

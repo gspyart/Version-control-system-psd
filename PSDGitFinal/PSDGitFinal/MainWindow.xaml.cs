@@ -34,6 +34,9 @@ namespace PSDGitFinal
         public MainWindow()
         {
             InitializeComponent();
+            Tagging.DataContext = App.Data;
+            commits.DataContext = selected;
+
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
@@ -44,13 +47,15 @@ namespace PSDGitFinal
 
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
             {
+                logout_openAuth();
+            };
+
+            commits.SelectionChanged += (a, b) => { //нажатие на коммит - открытие файла
 
             };
 
-            Tagging.DataContext = App.Data;
-            commits.DataContext = selected;
-          
-            if (App.Authorization.data.sender == null)
+
+            if (!App.Authorization.isOnline())
             {
                 logout_openAuth();
             }
@@ -65,9 +70,7 @@ namespace PSDGitFinal
             //    MessageBox.Show(ProjectsTable.Select().ToString());
             //}
 
-            commits.SelectionChanged += (a, b) => {
-
-            };
+      
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -122,7 +125,6 @@ namespace PSDGitFinal
         private void Button_logout(object sender, RoutedEventArgs e)
         {
             App.Authorization.LogOut();
-            logout_openAuth();
         }
 
         private void logout_openAuth()
