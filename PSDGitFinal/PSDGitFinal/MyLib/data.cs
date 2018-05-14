@@ -39,9 +39,9 @@ namespace dp
         }
         public void DatabaseLoad(User user)
         {
+            UserProjects.Clear();
             SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
             m_dbConn.Open();
-
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
             m_sqlCmd.CommandText = "Select * from Projects";
             SQLiteDataReader data = m_sqlCmd.ExecuteReader();
@@ -49,6 +49,19 @@ namespace dp
             {
                 if (data.GetString(3) == user.id) AddProject(new PSDProject(data.GetInt16(0),data.GetString(1), data.GetString(2), data.GetString(3)));
             }
+            //==========
+            //m_sqlCmd = m_dbConn.CreateCommand();
+            //m_sqlCmd.CommandText = "Select * from Commits";
+            //data = m_sqlCmd.ExecuteReader();
+            //while (data.Read())
+            //{
+            //    foreach (PSDProject kek in UserProjects)
+            //    {
+
+            //        if (data.GetString(2) == kek.name) kek.AddCommit(new Save(data.GetString(1), data.GetInt16(0)));
+            //    }
+            //}
+
             m_dbConn.Close();
 
         }
@@ -93,21 +106,17 @@ namespace dp
 
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
-                Save ns = new Save();
+                Save ns = new Save("test commit", Commits.Count);
                 AddCommit(ns);
 
-                SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
-                m_dbConn.Open();
-                SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
-                m_sqlCmd.CommandText = "INSERT INTO Commits (id, message, Project) values ('" + ns.number + "','" + ns.message + "'," + "'" + name + "')";
-                m_sqlCmd.ExecuteNonQuery();
-                m_dbConn.Close();
-
-
-
+                //SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+                //m_dbConn.Open();
+                //SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+                //m_sqlCmd.CommandText = "INSERT INTO Commits (id, message, Project) values ('" + ns.number + "','" + ns.message + "'," + "'" + name + "')";
+                //m_sqlCmd.ExecuteNonQuery();
+                //m_dbConn.Close();
 
                 File.Copy(dir + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd");
-               
 
                 var image = new MagickImage(dir+n);
                 image.Write("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd.jpg");
@@ -145,14 +154,15 @@ namespace dp
     {
         public string message { get; set; }
         public int number { get; set; }
-        public Save(string m)
+        public Save(string m, int n)
         {
             message = m;
-            number = 0;
+            number = n;
         }
         public Save()
         {
             message = "commit_test";
+            number = 0;
 
         }
     }

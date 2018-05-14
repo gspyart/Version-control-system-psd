@@ -238,6 +238,7 @@
                 </Grid>
                 <Label Margin="0 15 0 0" Foreground="Gray">Screenshots</Label>
                 <ListBox x:Name="commits" ItemsSource="{Binding Commits}" DisplayMemberPath="message">
+                   
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>

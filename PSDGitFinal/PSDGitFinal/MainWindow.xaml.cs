@@ -34,7 +34,6 @@ namespace PSDGitFinal
         public MainWindow()
         {
             InitializeComponent();
-
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
@@ -65,7 +64,10 @@ namespace PSDGitFinal
             //    ProjectsTable =  App.Data.DatabaseLoad();
             //    MessageBox.Show(ProjectsTable.Select().ToString());
             //}
-          
+
+            commits.SelectionChanged += (a, b) => {
+
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -83,7 +85,7 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                //добавление проекта
+                //добавление проекта в бд и программу
                 PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
                 App.Data.AddProject(b);
                 App.Data.DatabaseInsert(b);
