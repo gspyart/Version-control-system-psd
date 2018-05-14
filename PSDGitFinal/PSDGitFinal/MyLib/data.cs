@@ -46,7 +46,7 @@ namespace dp
             SQLiteDataReader data = m_sqlCmd.ExecuteReader();
             while(data.Read())
             {
-                if (data.GetString(3) == user.id) AddProject(new PSDProject(data.GetInt32(0),data.GetString(1), data.GetString(2), data.GetString(3)));
+                if (data.GetString(3) == user.id) AddProject(new PSDProject(data.GetInt16(0),data.GetString(1), data.GetString(2), data.GetString(3)));
             }
             m_dbConn.Close();
 
