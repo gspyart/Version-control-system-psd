@@ -115,14 +115,14 @@
                                                     </Button.Template>
 
                                                 </Button>
-                                                <Button Click="Delete_project" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="25 0 25 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
-                                                    <Button.Template>
-                                                        <ControlTemplate>
-                                                            <StackPanel>
-                                                                <TextBlock  Foreground="#46435b" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Delete project" TextDecorations="Underline" />
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
+                                                <Button Click="Delete_project" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 0 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
+                                                Delete Project
+                                                </Button>
+                                                <Button Click="DB_Upload" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
+                                                    Uload Project
+                                                </Button>
+                                                <Button Click="DB_UploadAll" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
+                                                    Uload all
                                                 </Button>
                                             </StackPanel >
                                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">

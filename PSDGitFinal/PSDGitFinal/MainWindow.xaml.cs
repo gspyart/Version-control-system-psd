@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.IO.Compression;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -32,19 +33,21 @@ namespace PSDGitFinal
         
         public MainWindow()
         {
+            InitializeComponent();
 
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
+            //надо исправить login событие
             {
                 this.IsEnabled = true;
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
             };
+
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
             {
 
             };
-            InitializeComponent();
-  
+
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;
           
@@ -69,6 +72,9 @@ namespace PSDGitFinal
         {
             Application.Current.Shutdown();
         }
+        //
+        // TOP BAR 
+        //
         private void Open_dialog(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -77,14 +83,25 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                //добавление проектач
+                //добавление проекта
                 PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
                 App.Data.AddProject(b);
                 App.Data.DatabaseInsert(b);
             }
             
         }
+        private void DB_Upload(object sender, RoutedEventArgs e)
+        {
+       //     App.Authorization.data.client.Files
 
+        }
+        private void DB_UploadAll(object sender, RoutedEventArgs e)
+        {
+
+        }
+        //
+        //
+        //
         private void Tagging_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selected = (PSDProject)Tagging.SelectedItem;
@@ -112,5 +129,6 @@ namespace PSDGitFinal
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
+
     }
 }   

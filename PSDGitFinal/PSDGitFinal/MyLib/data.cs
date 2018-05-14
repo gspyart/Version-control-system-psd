@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using System.Data.Sql;
 using System.ComponentModel;
 using System.Data;
+using ImageMagick;
 using PSDGitFinal;
 namespace dp
 {
@@ -74,7 +75,7 @@ namespace dp
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
         public int id { get; set; }
         public string name { get; set; } //полное название файла
-        public string dir { get; set; } //путь проекта на конце /
+        public string dir { get; set; } //путь проекта, на конце "/"
         public string owner_id { get; set; } //имя пользователя проекта
         public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
         public PSDProject(int i, string n, string d, string v)
@@ -89,12 +90,27 @@ namespace dp
             looks.EnableRaisingEvents = true;
             looks.Created += (a, b) =>
             {
-                this.AddCommit(new Save());
-               
+
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
-                var t = Task.Run(() => File.Copy(dir + n, "data/" + owner_id + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd"));
-                t.Wait();
+                Save ns = new Save();
+                AddCommit(ns);
+
+                SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+                m_dbConn.Open();
+                SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+                m_sqlCmd.CommandText = "INSERT INTO Commits (id, message, Project) values ('" + ns.number + "','" + ns.message + "'," + "'" + name + "')";
+                m_sqlCmd.ExecuteNonQuery();
+                m_dbConn.Close();
+
+
+
+
+                File.Copy(dir + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd");
+               
+
+                var image = new MagickImage(dir+n);
+                image.Write("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd.jpg");
             };
         
         }
