@@ -32,11 +32,16 @@ namespace PSDGitFinal
         
         public MainWindow()
         {
-            DropbBoxLogIn.Auth.SenderChanged += () =>
+            DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             {
                 this.IsEnabled = true;
                 UsernameText.Text = App.Authorization.data.sender.username;
             };
+            DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
+            {
+
+            };
+
             InitializeComponent();
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;

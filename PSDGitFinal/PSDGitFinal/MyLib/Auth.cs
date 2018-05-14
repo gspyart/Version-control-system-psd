@@ -168,6 +168,7 @@ namespace DropbBoxLogIn
             data.sender = null;
             data.client = null;        
             data.UsersSave();
+            logout();
         }
 
         //Dropbox Api
