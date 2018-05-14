@@ -248,7 +248,7 @@
             
         </Grid>
         <Button WindowChrome.IsHitTestVisibleInChrome="True" Click="Button_logout" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Log Out</Button>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="left" x:Name="UsernameText"  Foreground="#fff" Grid.Row="1">Username</TextBlock>
+        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="left" x:Name="UsernameText"  Foreground="#fff" Grid.Row="1">Username</TextBlock>
     </Grid>
 
 </Window>

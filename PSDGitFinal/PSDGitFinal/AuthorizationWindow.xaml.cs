@@ -21,6 +21,10 @@ namespace PSDGitFinal
     {
         public AuthorizationWindow()
         {
+            DropbBoxLogIn.Auth.SenderChanged += () => {
+                this.Close();
+            };
+
             InitializeComponent();
         }
 
@@ -33,7 +37,7 @@ namespace PSDGitFinal
         {
             browser web = new browser();
             web.Show();
-
+            
         }
 
     }

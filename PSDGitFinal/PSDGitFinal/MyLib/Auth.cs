@@ -37,8 +37,8 @@ namespace DropbBoxLogIn
     class Auth
     {
         public delegate void none();
-        
-
+        public static event none SenderChanged;
+        public static event none logout;
         protected internal class UserData   
         {
             
@@ -48,7 +48,7 @@ namespace DropbBoxLogIn
                 public List<User> allusers;
             }
             public User _sender { get { return sender; } set { sender = value;  } }
-            public User sender; // активный пользователь
+            public User sender;// активный пользователь
             public DropboxClient client; //api of active user
             private List<User> activeUsers = new List<User>(); //list of active users
             public void AddUser(User person)
@@ -80,7 +80,7 @@ namespace DropbBoxLogIn
                     info = JsonConvert.DeserializeObject<Jsondata>(tklist.ReadToEnd());
                     sender = info.activeuser;
                     activeUsers = info.allusers;
-                    if (sender != null) client = new DropboxClient(sender.token);
+                    if (sender != null) { client = new DropboxClient(sender.token); if (SenderChanged != null) SenderChanged(); }
                     tklist.Close();
                 }
 
@@ -122,7 +122,7 @@ namespace DropbBoxLogIn
             data.DeleteUser(o);
             data.UsersSave();
         }
-        public event none SenderChanged;
+
         public async void Choose(User a)
         {
             
@@ -131,7 +131,7 @@ namespace DropbBoxLogIn
                 try
                 {
                     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
-                if (SenderChanged != null)  SenderChanged();
+                if (SenderChanged != null) SenderChanged();
                 data.UsersSave();
             }
                 catch (Dropbox.Api.DropboxException v) //если токен недействителен
@@ -178,6 +178,7 @@ namespace DropbBoxLogIn
         public Auth()
         {
             data.UsersLoad();
+     
         }
     }
 

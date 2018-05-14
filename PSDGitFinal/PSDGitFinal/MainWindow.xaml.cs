@@ -29,18 +29,21 @@ namespace PSDGitFinal
     {
         internal DataTable ProjectsTable;
         PSDProject selected;
-        delegate void kek();
         
         public MainWindow()
         {
+            DropbBoxLogIn.Auth.SenderChanged += () =>
+            {
+                this.IsEnabled = true;
+                UsernameText.Text = App.Authorization.data.sender.username;
+            };
             InitializeComponent();
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;
+          
             if (App.Authorization.data.sender == null)
             {
-                this.IsEnabled = false;
-                AuthorizationWindow AuthWindow = new AuthorizationWindow();
-                AuthWindow.Show();
+                logout_openAuth();
             }
             else
             {
@@ -66,6 +69,7 @@ namespace PSDGitFinal
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
+              //добавление проектач
               App.Data.AddProject(new PSDProject(openFileDialog.SafeFileName,openFileDialog.FileName.Remove(openFileDialog.FileName.Length- openFileDialog.SafeFileName.Length), App.Authorization.data.sender.username));  
               
             }
@@ -86,6 +90,14 @@ namespace PSDGitFinal
         private void Button_logout(object sender, RoutedEventArgs e)
         {
             App.Authorization.LogOut();
+            logout_openAuth();
+        }
+
+        private void logout_openAuth()
+        {
+            this.IsEnabled = false;
+            AuthorizationWindow o = new AuthorizationWindow();
+            o.Show();
         }
     }
 }   

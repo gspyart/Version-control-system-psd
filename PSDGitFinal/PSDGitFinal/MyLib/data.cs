@@ -26,7 +26,6 @@ namespace dp
         public void AddProject(PSDProject b)
         {
             UserProjects.Add(b);
-     
         }
         public Data()
         {
@@ -53,10 +52,11 @@ namespace dp
 
     class PSDProject //проект
     {
+        
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
-        public string name { get; set; } //название проекта
-        public string dir { get; set; } //путь проекта
-        public string owner { get; set; } //уникальный id проекта
+        public string name { get; set; } //полное название файла
+        public string dir { get; set; } //путь проекта на конце /
+        public string owner { get; set; } //имя пользователя проекта
         public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
         public PSDProject(string n, string d, string v)
         {
@@ -67,11 +67,14 @@ namespace dp
             Directory.CreateDirectory("data/" + owner + "/" + name.Remove(name.Length-4));
             looks.Path = d; 
             looks.EnableRaisingEvents = true;
-            looks.Changed += (a, b) =>
+            looks.Created += (a, b) =>
             {
                 this.AddCommit(new Save());
+               
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
+                var t = Task.Run(() => File.Copy(dir + n, "data/" + owner + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd"));
+                t.Wait();
             };
         
         }

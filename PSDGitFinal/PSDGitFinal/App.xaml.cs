@@ -14,7 +14,19 @@ namespace PSDGitFinal
     /// </summary>
     public partial class App : Application
     {
-        internal static DropbBoxLogIn.Auth Authorization = new DropbBoxLogIn.Auth();
-        internal static dp.Data Data = new dp.Data();
+        internal static DropbBoxLogIn.Auth Authorization;
+        internal static dp.Data Data;
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            DropbBoxLogIn.Auth.SenderChanged += () => {}; //событие происходящие при авторизации нового пользователя (надо объъявить до вызова конструктора)
+            Authorization = new DropbBoxLogIn.Auth();
+             Data = new dp.Data();
+     
+        }
+
+
+
+
     }
 }
