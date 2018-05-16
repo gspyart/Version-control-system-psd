@@ -28,9 +28,7 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal DataTable ProjectsTable;
-        PSDProject selected;
-        
+        PSDProject selected;  
         public MainWindow()
         {
             InitializeComponent();

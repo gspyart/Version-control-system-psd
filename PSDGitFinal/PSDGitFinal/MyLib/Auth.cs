@@ -5,10 +5,11 @@ using Dropbox.Api;
 using Dropbox.Api.Users;
 using Newtonsoft.Json;
 using System.IO;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Net;
 using Dianoga.ImageMagick;
-
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -40,9 +41,9 @@ namespace DropbBoxLogIn
         public delegate void none();
         public static event none SenderChanged;
         public static event none logout;
-        protected internal class UserData   
+        protected internal class UserData: INotifyPropertyChanged
         {
-            
+            public event PropertyChangedEventHandler PropertyChanged;
             protected internal class Jsondata
             {
                 public User activeuser;
@@ -51,7 +52,12 @@ namespace DropbBoxLogIn
             public User _sender { get { return sender; } set { sender = value;  } }
             public User sender;// активный пользователь
             public DropboxClient client; //api of active user
-            private List<User> activeUsers = new List<User>(); //list of active users
+            private List<User> activeUsers = new List<User>();
+            public List<User> ActiveUsers { get { return activeUsers; } set { PropertyChanged(this, new PropertyChangedEventArgs("")); activeUsers = value; } }
+            //list of active users
+
+
+
             public void AddUser(User person)
             {
                 
@@ -189,6 +195,7 @@ namespace DropbBoxLogIn
         }
         public Auth()
         {
+            
             data.UsersLoad();
      
         }
