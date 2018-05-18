@@ -49,9 +49,22 @@ namespace dp
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
             m_sqlCmd.CommandText = "Select * from Projects";
             SQLiteDataReader data = m_sqlCmd.ExecuteReader();
-            while(data.Read())
-            {   
-                if (data.GetString(3) == user.id) AddProject(new PSDProject(data.GetInt16(0),data.GetString(1), data.GetString(2), data.GetString(3)));
+     
+            SQLiteCommand m_sqlCmd2 = m_dbConn.CreateCommand();
+            m_sqlCmd2.CommandText = "Select * from Commits";
+            SQLiteDataReader data2 = m_sqlCmd2.ExecuteReader();
+
+            while (data.Read())
+            {          
+                if (data.GetString(3) == user.id)
+                {
+                    PSDProject m = new PSDProject(data.GetInt16(0), data.GetString(1), data.GetString(2), data.GetString(3));
+                    AddProject(m);
+                    while (data2.Read())
+                    {
+                        if (data2.GetInt16(1) == data.GetInt16(0)) m.AddCommit(new Save(data2.GetString(2), data2.GetInt32(1)));
+                    }
+                }
             }
             //==========
             //m_sqlCmd = m_dbConn.CreateCommand();
@@ -120,9 +133,7 @@ namespace dp
 
             zip.CreateEntryFromFile(dir + name, name);
             var zipimage = zip.CreateEntry("preview.jpg");
-
             BinaryWriter sw = new BinaryWriter(zipimage.Open());
-
             var kek = new MemoryStream();
             image.ToBitmap().Save(kek, System.Drawing.Imaging.ImageFormat.Jpeg);
             byte[] bytes = kek.GetBuffer();
@@ -137,30 +148,35 @@ namespace dp
         public PSDProject(int i, string n, string d, string v)
         {
 
-             id = i;
+            id = i;
             Commits = new ObservableCollection<Save>();
             name = n;
             dir = d;
             owner_id = v;
             // d + n = full directioay
             Directory.CreateDirectory("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length-4)); //замена недопустимых символов в пути
-            looks.Path = d; 
+            looks.Path = d;
+            
             looks.EnableRaisingEvents = true;
-            looks.Created += (a, b) =>
+
+            looks.Deleted += (a, b) =>
             {
+                if (b.FullPath == dir+name) { 
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
                 okno(this, EventArgs.Empty);
+                }
                 //commit commit_window = new commit();
                 //commit_window.Show();
                 ////==================================================
                 //commit_window.happend += (f,g) =>
                 //{
-                
+
                 //};
                 //==================================
             };
-        
+          //  if (!File.Exists(dir + name)) looks.Dispose(); 
+
         }
         
 
@@ -193,7 +209,7 @@ namespace dp
     {
         public string message { get; set; }
         public int number { get; set; }
-
+        public Bitmap preview { get; set; }
         public Save(string m, int n)
         {
             message = m;
