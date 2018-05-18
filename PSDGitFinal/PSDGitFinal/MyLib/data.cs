@@ -60,19 +60,24 @@ namespace dp
             SQLiteDataReader data2 = m_sqlCmd2.ExecuteReader();
 
             while (data.Read())
-            {          
+            {
+                data2.Close();
+                data2 = m_sqlCmd2.ExecuteReader();
                 if (data.GetString(3) == user.id)
                 {
-                    PSDProject m = new PSDProject(data.GetInt16(0), data.GetString(1), data.GetString(2), data.GetString(3));
+                    PSDProject m = new PSDProject(data.GetInt32(0), data.GetString(1), data.GetString(2), data.GetString(3));
                     AddProject(m);
                     while (data2.Read())
                     {
-                        Save o = new Save(data2.GetString(3), data2.GetInt32(1));
-                        if (data2.GetInt16(2) == data.GetInt16(0)) m.AddCommit(o);
+                        MessageBox.Show("k");
+                        Save o = new Save(data2.GetString(3), data2.GetInt32(2), data2.GetInt32(1));
+                        if (data.GetInt32(0) == data2.GetInt32(2)) m.AddCommit(o);
 
                     }
                 }
             }
+            data.Close();
+            data2.Close();
             //==========
             //m_sqlCmd = m_dbConn.CreateCommand();
             //m_sqlCmd.CommandText = "Select * from Commits";
@@ -128,33 +133,34 @@ namespace dp
         {
             Save ns;
            // ns = new Save("autocommit", Commits.Count);
-              ns = txt.Length == 0 ? new Save("autocommit", Commits.Count) : new Save(txt, Commits.Count);
+              ns = txt.Length == 0 ? new Save("autocommit", id, Commits.Count) : new Save(txt, id, Commits.Count);
             //  CompressFile(d + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/");
             // File.Copy(dir + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd");
             SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
             m_dbConn.Open();
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
-            m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values (" + ns.number + "," + this.id + ",'" + ns.message + "')";
+            m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values (" + ns.que + "," + this.id + ",'" + ns.message + "')";
             m_sqlCmd.ExecuteNonQuery();
             m_dbConn.Close();
             AddCommit(ns);
-            var image = new MagickImage(dir + name);
-            var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + Commits.Count);
-            ZipArchive zip = new ZipArchive(t, ZipArchiveMode.Create, false);
 
-            zip.CreateEntryFromFile(dir + name, name);
-            var zipimage = zip.CreateEntry("preview.jpg");
-            BinaryWriter sw = new BinaryWriter(zipimage.Open());
-            var kek = new MemoryStream();
-            image.ToBitmap().Save(kek, System.Drawing.Imaging.ImageFormat.Jpeg);
-            byte[] bytes = kek.GetBuffer();
-            foreach (byte o in bytes)
-            {
-                sw.Write(o);
-            }
-            sw.Close();
-            kek.Close();
-            t.Close();
+            //var image = new MagickImage(dir + name);
+            //var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + Commits.Count);
+            //ZipArchive zip = new ZipArchive(t, ZipArchiveMode.Create, false);
+
+            //zip.CreateEntryFromFile(dir + name, name);
+            //var zipimage = zip.CreateEntry("preview.jpg");
+            //BinaryWriter sw = new BinaryWriter(zipimage.Open());
+            //var kek = new MemoryStream();
+            //image.ToBitmap().Save(kek, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //byte[] bytes = kek.GetBuffer();
+            //foreach (byte o in bytes)
+            //{
+            //    sw.Write(o);
+            //}
+            //sw.Close();
+            //kek.Close();
+            //t.Close();
         }
         public PSDProject(int i, string n, string d, string v)
         {
@@ -167,8 +173,7 @@ namespace dp
             // d + n = full directioay
             Directory.CreateDirectory("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length-4)); //замена недопустимых символов в пути
             looks.Path = d;
-            looks.EnableRaisingEvents = false;
-            
+            looks.EnableRaisingEvents = false;        
             looks.EnableRaisingEvents = true;
 
             looks.Deleted += (a, b) =>
@@ -221,9 +226,11 @@ namespace dp
     {
         public string message { get; set; }
         public int number { get; set; }
+        public int que { get; set; }
         public Bitmap preview { get; set; }
-        public Save(string m, int n)
+        public Save(string m, int n, int q)
         {
+            que = q;
             message = m;
             number = n;
         }
