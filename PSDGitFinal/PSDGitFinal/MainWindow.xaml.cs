@@ -99,12 +99,13 @@ namespace PSDGitFinal
             openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true) //Добавление проекта в бд и загрузка всех проектов из бд в программу с "нормальным" id
             {
-                //добавление проекта в бд и программу
+                
                 PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
-                App.Data.AddProject(b);
+                //App.Data.AddProject(b);
                 App.Data.DatabaseInsert(b);
+                App.Data.DatabaseLoad(App.Authorization.data.sender);
             }
             
         }
