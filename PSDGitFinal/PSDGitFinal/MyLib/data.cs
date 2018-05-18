@@ -62,7 +62,7 @@ namespace dp
                     AddProject(m);
                     while (data2.Read())
                     {
-                        Save o = new Save(data2.GetString(2), data2.GetInt32(1));
+                        Save o = new Save(data2.GetString(3), data2.GetInt32(1));
                         if (data2.GetInt16(2) == data.GetInt16(0)) m.AddCommit(o);
 
                     }
