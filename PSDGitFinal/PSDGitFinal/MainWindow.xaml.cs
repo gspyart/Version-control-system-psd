@@ -31,7 +31,9 @@ namespace PSDGitFinal
         PSDProject selected;  
         public MainWindow()
         {
+            commit ct = new commit();
             InitializeComponent();
+
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;
 
@@ -52,6 +54,20 @@ namespace PSDGitFinal
 
             };
 
+            dp.PSDProject.okno += (t, y) => {
+
+                this.IsEnabled = false;
+                ct.Dispatcher.Invoke(() => ct.Show());
+                ct.Closed += (j, o) =>
+                {
+                    this.IsEnabled = true;
+                };
+                ct.happend += (j, o) =>
+                {
+                    ((PSDProject)(t)).txt((string)j);
+                    this.IsEnabled = true;
+                };
+            };
 
             if (!App.Authorization.isOnline())
             {

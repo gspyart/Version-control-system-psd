@@ -11,8 +11,6 @@
         Background="Transparent"
         WindowStartupLocation="CenterOwner"
         Title="MainWindow" Height="320" Width="360">
-
-
     <Grid>
 
         <!-- Opacity mask for corners on grid -->
