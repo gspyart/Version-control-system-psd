@@ -43,7 +43,12 @@ namespace dp
         }
         public void DatabaseLoad(User user)
         {
-            UserProjects.Clear();
+            foreach (PSDProject o in UserProjects)
+            {
+                o.off();
+            }
+                UserProjects.Clear();
+
             SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
             m_dbConn.Open();
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
@@ -114,6 +119,10 @@ namespace dp
         public string name { get; set; } //полное название файла
         public string dir { get; set; } //путь проекта, на конце "/"
         public string owner_id { get; set; } //имя пользователя проекта
+        public void off()
+        {
+            this.looks.Dispose();
+        }
         public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
         public void txt(string txt)
         {
@@ -158,12 +167,13 @@ namespace dp
             // d + n = full directioay
             Directory.CreateDirectory("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length-4)); //замена недопустимых символов в пути
             looks.Path = d;
+            looks.EnableRaisingEvents = false;
             
             looks.EnableRaisingEvents = true;
 
             looks.Deleted += (a, b) =>
             {
-                if (b.FullPath == dir+name) { 
+                if (b.FullPath == dir+name) {
                 looks.EnableRaisingEvents = false;
                 looks.EnableRaisingEvents = true;
                 okno(this, EventArgs.Empty);

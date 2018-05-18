@@ -105,6 +105,7 @@ namespace PSDGitFinal
                 PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
                 //App.Data.AddProject(b);
                 App.Data.DatabaseInsert(b);
+                b.off();
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
             }
             
