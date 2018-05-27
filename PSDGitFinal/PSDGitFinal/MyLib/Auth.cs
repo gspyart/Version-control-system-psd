@@ -138,7 +138,7 @@ namespace DropbBoxLogIn
                 data.client = new DropboxClient(a.token);
                 try
                 {
-                    var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
+           //     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
                 if (SenderChanged != null) SenderChanged();
                 data.UsersSave();
             }

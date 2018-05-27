@@ -69,10 +69,11 @@ namespace dp
                     AddProject(m);
                     while (data2.Read())
                     {
-                        MessageBox.Show("k");
                         Save o = new Save(data2.GetString(3), data2.GetInt32(2), data2.GetInt32(1));
                         if (data.GetInt32(0) == data2.GetInt32(2)) m.AddCommit(o);
-
+                    // var t = ZipFile.OpenRead("data/" + user.id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + UserProjects.Count);
+                    //    t.GetEntry("file");
+                       // o.preview = new Bitmap(t.GetEntry("preview.jpg").Open());
                     }
                 }
             }
@@ -133,7 +134,7 @@ namespace dp
         {
             Save ns;
            // ns = new Save("autocommit", Commits.Count);
-              ns = txt.Length == 0 ? new Save("autocommit", id, Commits.Count) : new Save(txt, id, Commits.Count);
+            ns = txt.Length == 0 ? new Save("autocommit", id, Commits.Count) : new Save(txt, id, Commits.Count);
             //  CompressFile(d + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/");
             // File.Copy(dir + n, "data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/" + "commit_" + Commits.Count + ".psd");
             SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
@@ -144,11 +145,12 @@ namespace dp
             m_dbConn.Close();
             AddCommit(ns);
 
-            //var image = new MagickImage(dir + name);
-            //var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + Commits.Count);
-            //ZipArchive zip = new ZipArchive(t, ZipArchiveMode.Create, false);
-
-            //zip.CreateEntryFromFile(dir + name, name);
+           // var image = new MagickImage(dir + name);
+            var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + (Commits.Count-1));
+            var tr = File.Open(dir+name,FileMode.Open);
+            GZipStream o = new GZipStream(t, CompressionMode.Compress);
+            tr.CopyTo(o);
+            o.Close();
             //var zipimage = zip.CreateEntry("preview.jpg");
             //BinaryWriter sw = new BinaryWriter(zipimage.Open());
             //var kek = new MemoryStream();
@@ -160,7 +162,9 @@ namespace dp
             //}
             //sw.Close();
             //kek.Close();
-            //t.Close();
+            tr.Close();
+            t.Close();
+
         }
         public PSDProject(int i, string n, string d, string v)
         {
@@ -212,6 +216,7 @@ namespace dp
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 Commits.Add(b);
+                
             });
 
         }  //добавить коммит
@@ -238,6 +243,22 @@ namespace dp
         {
             message = "commit_test";
             number = 0;
+
+        }
+        public void Open(PSDProject a)
+        {
+            //сохранить файл в дериктории исходного проекта f
+            string path = a.dir + a.name + "commited" + this.que +".psd";
+            if (!File.Exists(path)) {
+                var file = File.Open("data/" + a.owner_id.Replace(':', '-') + "/" + a.name.Remove(a.name.Length - 4) + "/commit" + (a.Commits.Count - 1), FileMode.Open);
+                var k = File.Create(path);
+                var t = new GZipStream(file, CompressionMode.Decompress);
+                t.CopyTo(k);
+                t.Close();
+                k.Close();
+                file.Close();
+            }
+            System.Diagnostics.Process.Start(path);
 
         }
     }

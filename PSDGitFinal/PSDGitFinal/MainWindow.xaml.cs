@@ -50,12 +50,8 @@ namespace PSDGitFinal
                 logout_openAuth();
             };
 
-            commits.SelectionChanged += (a, b) => { //нажатие на коммит - открытие файла
-
-            };
-
             dp.PSDProject.okno += (t, y) => {
-                ct.Dispatcher.Invoke(() => { ct = new commit(); ct.Show(); });
+                ct.Dispatcher.Invoke(() => { ct = new commit(); ct.Show(); ct.Focus(); });
 
                 ct.Closed += (j, o) =>
                 {
@@ -66,6 +62,13 @@ namespace PSDGitFinal
                 {
                     ((PSDProject)(t)).txt((string)j);
                 };
+            };
+
+            commits.SelectionChanged += (a, b) =>
+            {
+                Save t = (Save)commits.SelectedItem;
+                MessageBox.Show("номер коммита " + t.que.ToString());
+                t.Open((PSDProject)Tagging.SelectedItem);
             };
 
             if (!App.Authorization.isOnline())

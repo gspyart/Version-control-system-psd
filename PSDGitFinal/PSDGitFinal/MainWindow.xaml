@@ -231,7 +231,7 @@
                         </Grid.OpacityMask>
                         <StackPanel Margin="10 0 0 0" Background="AliceBlue" VerticalAlignment="Top">
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.name, Mode=TwoWay}"  FontSize="19" Foreground="Black">Hello</TextBlock>
-                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.dir, Mode=TwoWay}" x:Name="ArtistText" Margin="0 7 0 0" Foreground="MediumPurple">Artist: Hui</TextBlock>
+                            <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.dir, Mode=TwoWay}" x:Name="ArtistText" Margin="0 7 0 0" Foreground="MediumPurple">direct</TextBlock>
                         </StackPanel>
                     </Grid>
                 
