@@ -121,8 +121,8 @@
                                                 <Button Click="DB_Upload" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
                                                     Uload Project
                                                 </Button>
-                                                <Button Click="DB_UploadAll" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
-                                                    Uload all
+                                                <Button Click="Db_files" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
+                                                   dropbox files
                                                 </Button>
                                             </StackPanel >
                                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">

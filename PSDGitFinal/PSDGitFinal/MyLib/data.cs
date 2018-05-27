@@ -18,6 +18,8 @@ using System.Data.SQLite;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using Dropbox.Api;
+using Dropbox.Api.Files;
+using Dropbox.Api.Team;
 using Dropbox.Api.Users;
 using Newtonsoft.Json;
 using System.Data.Sql;
@@ -27,10 +29,17 @@ using ImageMagick;
 using PSDGitFinal;
 namespace dp
 {
-    
+
+   class RemoteProject
+    {
+        Bitmap image { get; set; }
+        string name { get; set; }
+        
+    }
+
     class Data
     {
-     
+        
         public ObservableCollection<PSDProject> UserProjects { get; set; }
 
         public void AddProject(PSDProject b)
@@ -103,15 +112,47 @@ namespace dp
             m_sqlCmd.ExecuteNonQuery(); 
             m_dbConn.Close();
         }
-
         public void DatabaseDelete(int id)
         {
            
+        }
+        //dropbox api
+        public async Task ProjectLoad(PSDProject t, DropboxClient user)
+        {
+            string dirpath = "/" + t.name.Remove(t.name.Length - 4);
+            async void insert()
+            {
+                foreach (Save o in t.Commits)
+                {
+                    var file = File.Open("data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/commit" + o.que, FileMode.Open);
+                    await user.Files.UploadAsync(dirpath + "/commit" + o.que, WriteMode.Overwrite.Instance, body: file);
+                }
+                string path = "data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/preview.jpeg";
+                var image = new MagickImage(t.dir + t.name);
+                var fc = File.Create(path);
+                image.ToBitmap().Save(fc, System.Drawing.Imaging.ImageFormat.Jpeg);
+                fc.Close();
+                var fo = File.Open(path, FileMode.Open);
+                await user.Files.UploadAsync(dirpath +  "/preview.jpeg", WriteMode.Overwrite.Instance, body: fo);
+                File.Delete(path);
+                fo.Close();
+
+            }
+            try {
+                await user.Files.CreateFolderV2Async(dirpath);
+                insert();
+            }
+            catch (DropboxException e)
+            {
+                insert();
+            }
+
         }
     }
 
     class PSDProject //проект
     {
+        public bool local = true;
         public static event EventHandler okno;
         private void CompressFile(string dir, string dircreate) // доделать сжатие файлов!!!!!
         {

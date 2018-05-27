@@ -43,3 +43,5 @@ D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\brows
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\browser.baml
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\commit.g.cs
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\commit.baml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\dropbox_files.g.cs
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\dropbox_files.baml

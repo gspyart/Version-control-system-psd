@@ -21,6 +21,9 @@ using System.IO;
 using System.Data;
 using Microsoft.Win32;
 using dp;
+using Dropbox.Api;
+using Dropbox.Api.Files;
+using Dropbox.Api.Team;
 namespace PSDGitFinal
 {
     /// <summary>
@@ -113,11 +116,15 @@ namespace PSDGitFinal
             }
             
         }
-        private void DB_Upload(object sender, RoutedEventArgs e)
+        private async void DB_Upload(object sender, RoutedEventArgs e)
         {
-            Save mycommit = (Save)commits.SelectedItem;
-           // var k = await App.Authorization.data.client.Files.UploadAsync("/PSDGit" + )
-       //     App.Authorization.data.client.Files
+            PSDProject o = (PSDProject)Tagging.SelectedItem;
+            var t = Task.Run(() => App.Data.ProjectLoad(o, App.Authorization.data.client));
+            t.Wait();
+
+
+
+            //     App.Authorization.data.client.Files
 
 
         }
@@ -154,6 +161,10 @@ namespace PSDGitFinal
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
-
+        private void Db_files (object sender, RoutedEventArgs e)
+        {
+            dropbox_files dwin = new dropbox_files();
+            dwin.Show();
+        }
     }
 }   
