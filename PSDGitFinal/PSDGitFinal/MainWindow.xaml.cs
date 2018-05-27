@@ -67,7 +67,7 @@ namespace PSDGitFinal
             commits.SelectionChanged += (a, b) =>
             {
                 Save t = (Save)commits.SelectedItem;
-                MessageBox.Show("номер коммита " + t.que.ToString());
+             // MessageBox.Show("номер коммита " + t.que.ToString());
                 t.Open((PSDProject)Tagging.SelectedItem);
             };
 
@@ -115,7 +115,10 @@ namespace PSDGitFinal
         }
         private void DB_Upload(object sender, RoutedEventArgs e)
         {
+            Save mycommit = (Save)commits.SelectedItem;
+           // var k = await App.Authorization.data.client.Files.UploadAsync("/PSDGit" + )
        //     App.Authorization.data.client.Files
+
 
         }
         private void DB_UploadAll(object sender, RoutedEventArgs e)

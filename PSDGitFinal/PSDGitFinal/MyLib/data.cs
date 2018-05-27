@@ -250,7 +250,8 @@ namespace dp
             //сохранить файл в дериктории исходного проекта f
             string path = a.dir + a.name + "commited" + this.que +".psd";
             if (!File.Exists(path)) {
-                var file = File.Open("data/" + a.owner_id.Replace(':', '-') + "/" + a.name.Remove(a.name.Length - 4) + "/commit" + (a.Commits.Count - 1), FileMode.Open);
+
+                var file = File.Open("data/" + a.owner_id.Replace(':', '-') + "/" + a.name.Remove(a.name.Length - 4) + "/commit" + que, FileMode.Open);
                 var k = File.Create(path);
                 var t = new GZipStream(file, CompressionMode.Decompress);
                 t.CopyTo(k);
@@ -258,6 +259,7 @@ namespace dp
                 k.Close();
                 file.Close();
             }
+       
             System.Diagnostics.Process.Start(path);
 
         }
