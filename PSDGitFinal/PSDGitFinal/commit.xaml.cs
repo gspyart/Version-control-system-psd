@@ -27,7 +27,7 @@ namespace PSDGitFinal
         }
         public void ok (object sender, EventArgs e)
         {
-            happend(commit_name.Text, EventArgs.Empty);
+            happend(commit_name.Text, e);
             this.Close();
         }
     }

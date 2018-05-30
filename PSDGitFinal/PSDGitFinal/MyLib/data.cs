@@ -49,11 +49,11 @@ namespace dp
 
         public static MemoryStream Decompress(FileStream e)
         {
-                var k = new MemoryStream();
-                var t = new GZipStream(e, CompressionMode.Decompress);
-                t.CopyTo(k);
-                t.Close();
-                return k;
+            var k = new MemoryStream();
+            var t = new GZipStream(e, CompressionMode.Decompress);
+            t.CopyTo(k);
+            t.Close();
+            return k;
         }
 
         public void AddProject(PSDProject b) //добавить проект
@@ -90,44 +90,46 @@ namespace dp
         //БД 
         public void DatabaseLoad(User user) //данные из БД о проектах
         {
-            try { 
-            foreach (PSDProject o in UserProjects)
+            try
             {
-                o.off();
-            }
-            UserProjects.Clear();
-            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
-            m_dbConn.Open();
-            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
-            m_sqlCmd.CommandText = "Select * from Projects";
-            SQLiteDataReader data = m_sqlCmd.ExecuteReader();
-            SQLiteCommand m_sqlCmd2 = m_dbConn.CreateCommand();
-            m_sqlCmd2.CommandText = "Select * from Commits";
-            SQLiteDataReader data2 = m_sqlCmd2.ExecuteReader();
-            while (data.Read())
-            {
-                data2.Close();
-                data2 = m_sqlCmd2.ExecuteReader();
-                if (data.GetString(3) == user.id)
+                foreach (PSDProject o in UserProjects)
                 {
-                    PSDProject m = new PSDProject(data.GetInt32(0), data.GetString(1), data.GetString(2), data.GetString(3));
-                    AddProject(m);
-                    while (data2.Read())
+                    o.off();
+                }
+                UserProjects.Clear();
+                SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+                m_dbConn.Open();
+                SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+                m_sqlCmd.CommandText = "Select * from Projects";
+                SQLiteDataReader data = m_sqlCmd.ExecuteReader();
+                SQLiteCommand m_sqlCmd2 = m_dbConn.CreateCommand();
+                m_sqlCmd2.CommandText = "Select * from Commits";
+                SQLiteDataReader data2 = m_sqlCmd2.ExecuteReader();
+                while (data.Read())
+                {
+                    data2.Close();
+                    data2 = m_sqlCmd2.ExecuteReader();
+                    if (data.GetString(3) == user.id)
                     {
-                        Save o = new Save(data2.GetString(3), data2.GetInt32(2), data2.GetInt32(1));
-                        if (data.GetInt32(0) == data2.GetInt32(2)) {
-                            var ms = Decompress(File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + o.que, FileMode.Open));
-                            o.preview = new Bitmap(ms);
-                            m.AddCommit(o);
-                            ms.Close();
+                        PSDProject m = new PSDProject(data.GetInt32(0), data.GetString(1), data.GetString(2), data.GetString(3));
+                        AddProject(m);
+                        while (data2.Read())
+                        {
+                            Save o = new Save(data2.GetString(3), data2.GetInt32(2), data2.GetInt32(1));
+                            if (data.GetInt32(0) == data2.GetInt32(2))
+                            {
+                                var ms = Decompress(File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + o.que, FileMode.Open));
+                                //o.preview = new Bitmap(ms);        ломается
+                                m.AddCommit(o);
+                                ms.Close();
+                            }
+
                         }
-                        
                     }
                 }
-            }
-            data.Close();
-            data2.Close();
-            m_dbConn.Close();
+                data.Close();
+                data2.Close();
+                m_dbConn.Close();
             }
             catch (Exception ex)
             {
@@ -266,13 +268,6 @@ namespace dp
     {
         public bool local = true;
         public static event EventHandler okno;
-        private void CompressFile(string dir, string dircreate) // доделать сжатие файлов!!!!!
-        {
-            FileStream buff = File.Open(dir, FileMode.Open);
-            FileStream buff2 = File.Create(dircreate + "kek.gz");
-            GZipStream compress = new GZipStream(buff, CompressionMode.Compress);
-            buff2.CopyTo(compress);
-        }
         public FileSystemWatcher looks = new FileSystemWatcher(); //отслеживание файла
         public int id { get; set; }
         public string name { get; set; } //полное название файла
@@ -285,31 +280,32 @@ namespace dp
         public ObservableCollection<Save> Commits { get; set; } //список коммитов проекта
         public void txt(string txt)
         {
-            try {
-            Save ns;
-            ns = txt.Length == 0 ? new Save("autocommit", id, Commits.Count) : new Save(txt, id, Commits.Count);
-
-            var ms = Data.Decompress(File.Open("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + ns.que, FileMode.Open));
-            ns.preview = new Bitmap(ms);
-
-            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
-            m_dbConn.Open();
-            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
-            m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values (" + ns.que + "," + this.id + ",'" + ns.message + "')";
-            m_sqlCmd.ExecuteNonQuery();
-            m_dbConn.Close();
-            AddCommit(ns);
-            var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + (Commits.Count - 1));
-            var tr = File.Open(dir + name, FileMode.Open);
-            GZipStream o = new GZipStream(t, CompressionMode.Compress);
-            tr.CopyTo(o);
-            o.Close();
-            tr.Close();
-            t.Close();
-            using (var infons = File.Create("data/" + this.owner_id.Replace(':', '-') + "/" + this.name.Remove(this.name.Length - 4) + "/metadata"))
+            try
             {
-                Data.metadata(this, infons);
-            }
+                Save ns;
+                ns = txt.Length == 0 ? new Save("autocommit", id, Commits.Count) : new Save(txt, id, Commits.Count);
+                SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+                m_dbConn.Open();
+                SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+                m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values (" + ns.que + "," + this.id + ",'" + ns.message + "')";
+                m_sqlCmd.ExecuteNonQuery();
+                m_dbConn.Close();
+                AddCommit(ns);
+                var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + (Commits.Count - 1));
+                var tr = File.Open(dir + name, FileMode.Open);
+                GZipStream o = new GZipStream(t, CompressionMode.Compress);
+                tr.CopyTo(o);
+                o.Close();
+                tr.Close();
+                t.Close();
+               // ломается
+               // var ms = Data.Decompress(File.Open("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + ns.que, FileMode.Open));
+               // ns.preview = new Bitmap(ms);
+
+                using (var infons = File.Create("data/" + this.owner_id.Replace(':', '-') + "/" + this.name.Remove(this.name.Length - 4) + "/metadata"))
+                {
+                    Data.metadata(this, infons);
+                }
             }
             catch (Exception ex)
             {
@@ -343,6 +339,11 @@ namespace dp
             catch (Exception message)
             {
                 MessageBox.Show("Ошибка в конструкторе PSDProject коммита: " + message.Message);
+            }
+
+            using (var infons = File.Create("data/" + this.owner_id.Replace(':', '-') + "/" + this.name.Remove(this.name.Length - 4) + "/metadata"))
+            {
+                Data.metadata(this, infons);
             }
         }
 

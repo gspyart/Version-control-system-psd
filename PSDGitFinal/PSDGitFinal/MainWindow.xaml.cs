@@ -43,7 +43,9 @@ namespace PSDGitFinal
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
+
                 this.IsEnabled = true;
+                App.Authorization.CheckToken();
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
             };

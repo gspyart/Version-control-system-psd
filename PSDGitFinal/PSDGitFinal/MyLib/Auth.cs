@@ -131,6 +131,21 @@ namespace DropbBoxLogIn
             data.UsersSave();
         }
 
+        public async void CheckToken()
+        {
+            try
+            {
+                await data.client.Users.GetCurrentAccountAsync();
+            }
+            catch (DropboxException ex)
+            {
+                User b = data.sender;
+                MessageBox.Show("Токен устарел");
+                LogOut();
+                data.DeleteUser(b);
+            }
+        }
+
         public async void Choose(User a)
         {
 
@@ -170,7 +185,7 @@ namespace DropbBoxLogIn
             explorer.Navigate(link);
         } //добавить нового пользователя
 
-
+  
         public void LogOut()
         {
             data.sender = null;
@@ -179,10 +194,7 @@ namespace DropbBoxLogIn
             logout();
         }
 
-        /// <summary>
-        /// Проверка есть ли активный пользователь
-        /// </summary>
-        /// <returns></returns>
+
         public bool isOnline()
         {
             if (data.sender != null) return true;
