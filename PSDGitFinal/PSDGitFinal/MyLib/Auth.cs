@@ -35,13 +35,13 @@ namespace DropbBoxLogIn
         }
     }
 
-    
+
     class Auth
     {
         public delegate void none();
         public static event none SenderChanged;
         public static event none logout;
-        protected internal class UserData: INotifyPropertyChanged
+        protected internal class UserData : INotifyPropertyChanged
         {
             public event PropertyChangedEventHandler PropertyChanged;
             protected internal class Jsondata
@@ -49,7 +49,7 @@ namespace DropbBoxLogIn
                 public User activeuser;
                 public List<User> allusers;
             }
-            public User _sender { get { return sender; } set { sender = value;  } }
+            public User _sender { get { return sender; } set { sender = value; } }
             public User sender;// активный пользователь
             public DropboxClient client; //api of active user
             private List<User> activeUsers = new List<User>();
@@ -60,7 +60,7 @@ namespace DropbBoxLogIn
 
             public void AddUser(User person)
             {
-                
+
                 bool l = true;
                 foreach (User o in activeUsers)
                 {
@@ -133,34 +133,34 @@ namespace DropbBoxLogIn
 
         public async void Choose(User a)
         {
-            
+
             data.sender = a;
-                data.client = new DropboxClient(a.token);
-                try
-                {
-           //     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
+            data.client = new DropboxClient(a.token);
+            try
+            {
+                //     var k = await data.client.Users.GetCurrentAccountAsync(); //проверка токена на актуальность
                 if (SenderChanged != null) SenderChanged();
                 data.UsersSave();
             }
-                catch (Dropbox.Api.DropboxException v) //если токен недействителен
-                {
-                    DeleteUser(data.sender);
-                    LogOut();
-                    // Application.Exit();
-                }
+            catch (Dropbox.Api.DropboxException v) //если токен недействителен
+            {
+                DeleteUser(data.sender);
+                LogOut();
+                // Application.Exit();
+            }
 
-                   
+
 
         } //выбор активного пользователя со списка
-       
+
         async public Task Logined(WebBrowser ex) //ok
         {
-           
+
             Uri uri_token = ex.Source;
             OAuth2Response s_Token = DropboxOAuth2Helper.ParseTokenFragment(uri_token);
             data.client = new DropboxClient(s_Token.AccessToken);
             var inf = await data.client.Users.GetCurrentAccountAsync();
-            User newuser = new User(inf.AccountId,inf.Name.DisplayName, s_Token.AccessToken);
+            User newuser = new User(inf.AccountId, inf.Name.DisplayName, s_Token.AccessToken);
             data.AddUser(newuser);
             Choose(newuser);
             data.UsersSave();
@@ -170,11 +170,11 @@ namespace DropbBoxLogIn
             explorer.Navigate(link);
         } //добавить нового пользователя
 
-        
+
         public void LogOut()
         {
             data.sender = null;
-            data.client = null;        
+            data.client = null;
             data.UsersSave();
             logout();
         }
@@ -183,7 +183,7 @@ namespace DropbBoxLogIn
         /// Проверка есть ли активный пользователь
         /// </summary>
         /// <returns></returns>
-        public bool isOnline() 
+        public bool isOnline()
         {
             if (data.sender != null) return true;
             return false;
@@ -191,13 +191,13 @@ namespace DropbBoxLogIn
         //Dropbox Api
         public void UploadAll()
         {
-            data.client.Files.BeginCreateFolderV2("/PSDGit");     
+            data.client.Files.BeginCreateFolderV2("/PSDGit");
         }
         public Auth()
         {
-            
+
             data.UsersLoad();
-     
+
         }
     }
 

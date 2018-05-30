@@ -31,7 +31,7 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
-        PSDProject selected;  
+        PSDProject selected;
         public MainWindow()
         {
             commit ct = new commit();
@@ -53,12 +53,15 @@ namespace PSDGitFinal
                 logout_openAuth();
             };
 
-            dp.PSDProject.okno += (t, y) => {
-              
-                    ct.Dispatcher.Invoke(() => { ct = new commit(); ct.Show(); ct.Focus();
+            dp.PSDProject.okno += (t, y) =>
+            {
 
-                       ct.KeyDown += (a,b) => { if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.S) && Keyboard.IsKeyDown(Key.D)) ct.ok(this, EventArgs.Empty); };
-                    });
+                ct.Dispatcher.Invoke(() =>
+                {
+                    ct = new commit(); ct.Show(); ct.Focus();
+
+                    ct.KeyDown += (a, b) => { if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.S) && Keyboard.IsKeyDown(Key.D)) ct.ok(this, EventArgs.Empty); };
+                });
 
                 ct.Closed += (j, o) =>
                 {
@@ -67,6 +70,7 @@ namespace PSDGitFinal
 
                 ct.happend += (j, o) =>
                 {
+
                     ((PSDProject)(t)).txt((string)j);
                 };
             };
@@ -74,7 +78,7 @@ namespace PSDGitFinal
             commits.SelectionChanged += (a, b) =>
             {
                 Save t = (Save)commits.SelectedItem;
-             // MessageBox.Show("номер коммита " + t.que.ToString());
+                // MessageBox.Show("номер коммита " + t.que.ToString());
                 t.Open((PSDProject)Tagging.SelectedItem);
             };
 
@@ -93,7 +97,7 @@ namespace PSDGitFinal
             //    MessageBox.Show(ProjectsTable.Select().ToString());
             //}
 
-      
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -105,25 +109,33 @@ namespace PSDGitFinal
         //
         private void Open_dialog(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == true) //Добавление проекта в бд и загрузка всех проектов из бд в программу с "нормальным" id
+            try
             {
-                
-                PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
-                //App.Data.AddProject(b);
-                App.Data.DatabaseInsert(b);
-                b.off();
-                App.Data.DatabaseLoad(App.Authorization.data.sender);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.Multiselect = false;
+                if (openFileDialog.ShowDialog() == true) //Добавление проекта в бд и загрузка всех проектов из бд в программу с "нормальным" id
+                {
+
+                    PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
+                    //App.Data.AddProject(b);
+                    App.Data.DatabaseInsert(b);
+                    b.off();
+                    App.Data.DatabaseLoad(App.Authorization.data.sender);
+                }
             }
-            
+            catch (Exception message)
+            {
+                MessageBox.Show("Ошибка при добавлении проекта: " + message.Message);
+            }
+
+
         }
         private async void DB_Upload(object sender, RoutedEventArgs e)
         {
             PSDProject o = (PSDProject)Tagging.SelectedItem;
-           Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client);
+            Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client);
 
 
 
@@ -150,7 +162,7 @@ namespace PSDGitFinal
         }
         private void Delete_project(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         private void Button_logout(object sender, RoutedEventArgs e)
@@ -164,10 +176,10 @@ namespace PSDGitFinal
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
-        private void Db_files (object sender, RoutedEventArgs e)
+        private void Db_files(object sender, RoutedEventArgs e)
         {
             dropbox_files dwin = new dropbox_files();
             dwin.Show();
         }
     }
-}   
+}

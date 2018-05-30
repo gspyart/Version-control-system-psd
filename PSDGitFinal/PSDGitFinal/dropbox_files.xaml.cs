@@ -32,9 +32,9 @@ namespace PSDGitFinal
                 Projects.Items.Add(u);
             }
         }
-        public  dropbox_files()
+        public dropbox_files()
         {
-         
+
             this.DataContext = this;
             load();
             InitializeComponent();
