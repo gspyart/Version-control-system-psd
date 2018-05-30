@@ -54,7 +54,11 @@ namespace PSDGitFinal
             };
 
             dp.PSDProject.okno += (t, y) => {
-                ct.Dispatcher.Invoke(() => { ct = new commit(); ct.Show(); ct.Focus(); });
+              
+                    ct.Dispatcher.Invoke(() => { ct = new commit(); ct.Show(); ct.Focus();
+
+                       ct.KeyDown += (a,b) => { if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.S) && Keyboard.IsKeyDown(Key.D)) ct.ok(this, EventArgs.Empty); };
+                    });
 
                 ct.Closed += (j, o) =>
                 {
@@ -119,8 +123,7 @@ namespace PSDGitFinal
         private async void DB_Upload(object sender, RoutedEventArgs e)
         {
             PSDProject o = (PSDProject)Tagging.SelectedItem;
-            var t = Task.Run(() => App.Data.ProjectLoad(o, App.Authorization.data.client));
-            t.Wait();
+           Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client);
 
 
 

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSDGitFinal"
         mc:Ignorable="d"
-        Title="dropbox_files" Height="450" Width="800">
+        Title="dropbox_files" Height="300" Width="200">
     <Grid>
-        <ListBox x:Name="Projects">
+        <ListBox DisplayMemberPath="name" x:Name="Projects">
             
         </ListBox>
     </Grid>

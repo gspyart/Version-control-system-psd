@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using dp;
 using Dropbox.Api;
+using System.Collections.ObjectModel;
 using Dropbox.Api.Files;
 using Dropbox.Api.Team;
 namespace PSDGitFinal
@@ -22,11 +23,25 @@ namespace PSDGitFinal
     /// </summary>
     public partial class dropbox_files : Window
     {
-  
+        List<RemoteProject> list;
+        public async void load()
+        {
+            list = await App.Data.GetProjects(App.Authorization.data.client);
+            foreach (RemoteProject u in list)
+            {
+                Projects.Items.Add(u);
+            }
+        }
         public  dropbox_files()
         {
-          
+         
+            this.DataContext = this;
+            load();
             InitializeComponent();
+            Projects.SelectionChanged += (a, b) =>
+            {
+                App.Data.Download(App.Authorization.data.client, (RemoteProject)Projects.SelectedItem, App.Authorization.data.sender);
+            };
 
         }
     }

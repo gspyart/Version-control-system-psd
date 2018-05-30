@@ -10,6 +10,7 @@ using Dianoga.ImageMagick;
 using System.Threading;
 using System.Collections.ObjectModel;
 using System.IO;
+using Newtonsoft.Json;
 using System.IO.Packaging;
 using DropbBoxLogIn;
 using System.Drawing;
@@ -29,17 +30,34 @@ using ImageMagick;
 using PSDGitFinal;
 namespace dp
 {
+    
 
    class RemoteProject
     {
-        Bitmap image { get; set; }
-        string name { get; set; }
+        public MemoryStream image { get; set; }
+        public string name { get; set; }
         
     }
 
+    class CommitsDescr
+    {
+        public int id { get; set; }
+        public string descr { get; set; }
+    }
     class Data
     {
-        
+        public delegate Task Tu(PSDProject a, Dropbox.Api.DropboxClient k);
+        static int load = 0;
+        public static void TryUpload(Tu cb, PSDProject a, Dropbox.Api.DropboxClient k) 
+        {
+            if (load < 1)
+            {
+                load++;
+                Thread th = new Thread(new ThreadStart(() => { var t=Task.Run(()=>cb(a, k)); t.Wait(); load--; }));
+                th.Start();
+
+            }
+        }
         public ObservableCollection<PSDProject> UserProjects { get; set; }
 
         public void AddProject(PSDProject b)
@@ -112,18 +130,32 @@ namespace dp
             m_sqlCmd.ExecuteNonQuery(); 
             m_dbConn.Close();
         }
+        //public void DatabaseCommitInsert(PSDProject a, Save b)
+        //{
+        //    SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+        //    m_dbConn.Open();
+        //    SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+        //    m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values ('" + a.name + "','" + a.dir + "','" + a.owner_id + "')";
+        //    m_sqlCmd.ExecuteNonQuery();
+        //    m_dbConn.Close();
+        //}
         public void DatabaseDelete(int id)
         {
            
         }
+
+
         //dropbox api
-        public async Task ProjectLoad(PSDProject t, DropboxClient user)
+        public async Task ProjectLoad(PSDProject t, DropboxClient user) //upload on dropbox
         {
+            List<Save> infojson = t.Commits.ToList(); //сериализация метаданных
+            var inf =  JsonConvert.SerializeObject(infojson);
             string dirpath = "/" + t.name.Remove(t.name.Length - 4);
-            async void insert()
+            async Task insert()
             {
                 foreach (Save o in t.Commits)
                 {
+
                     var file = File.Open("data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/commit" + o.que, FileMode.Open);
                     await user.Files.UploadAsync(dirpath + "/commit" + o.que, WriteMode.Overwrite.Instance, body: file);
                 }
@@ -136,17 +168,112 @@ namespace dp
                 await user.Files.UploadAsync(dirpath +  "/preview.jpeg", WriteMode.Overwrite.Instance, body: fo);
                 File.Delete(path);
                 fo.Close();
+                using (var infons = File.Create("data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/metadata"))
+                {
+                    foreach (byte u in inf.ToArray())
+                    {
+                        infons.WriteByte(u);
+                    }
+                    infons.Close();
+                }
+                using (var infons = File.Open("data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/metadata",FileMode.Open))
+                {
+                    await user.Files.UploadAsync(dirpath + "/metadata", WriteMode.Overwrite.Instance, body: infons);
+                    infons.Close();
+                }
+                
+
+               
+               
 
             }
             try {
                 await user.Files.CreateFolderV2Async(dirpath);
-                insert();
+                var u = Task.Run(() => insert());
+                u.Wait();
             }
             catch (DropboxException e)
             {
-                insert();
+                var u = Task.Run(() => insert());
+                u.Wait();
             }
 
+        }
+
+        public async Task Download(DropboxClient user, RemoteProject rp, User myuser)
+        {
+            var lst = await user.Files.ListFolderAsync("/"+rp.name);
+            int j = lst.Entries.Count; //количество коммитов на дропбоксе
+
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+            m_dbConn.Open();
+            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            m_sqlCmd.CommandText = "select id from Projects where project_name = " + "'" +rp.name + ".psd'";
+            SQLiteDataReader data = m_sqlCmd.ExecuteReader();
+            data.Read();
+            int id = data.GetInt32(0);  //айди проекта в бд
+            data.Close();
+            m_sqlCmd.CommandText = "select * from Commits where Project_id = " + id ;
+            SQLiteDataReader data2 = m_sqlCmd.ExecuteReader();
+            data2.Read();
+            data2.Close();
+            m_dbConn.Close();
+            
+
+            //var lst = await user.Files.ListFolderAsync("/"+rp.name);
+            //int commits = 0;
+            //SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+            //m_dbConn.Open();
+            //SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            //m_sqlCmd.CommandText = "Select * from Projects";
+            //SQLiteDataReader data = m_sqlCmd.ExecuteReader();
+
+            //SQLiteCommand m_sqlCmd2 = m_dbConn.CreateCommand();
+            //m_sqlCmd.CommandText = "Select * from Commits";
+            //SQLiteDataReader data2 = m_sqlCmd.ExecuteReader();
+
+            //while (data.Read())
+            //{
+            //    if (data.GetString(1) == rp.name && data.GetString(3) == myuser.id)
+            //    {
+            //        while(data2.Read())
+            //        {
+            //            if (data2.GetInt32(2) == data.GetInt32(0)) commits++;
+            //        }
+            //    }
+            //}
+            //if (commits < lst.Entries.Count-1) {
+            //    List<Save> saves = new List<Save>();
+            //    foreach (var file in lst.Entries)
+            //    {
+            //        if (file.Name != "preview.jpeg")
+            //        {
+            //            var k = await user.Files.DownloadAsync(path: "/" + rp.name + "/" + file.Name);
+            //            var stream = await k.GetContentAsStreamAsync();
+            //            MemoryStream t = new MemoryStream();
+            //            stream.CopyTo(t);
+
+
+            //        }
+            //    }
+            //}
+
+
+
+        }
+        public async Task<List<RemoteProject>> GetProjects(DropboxClient user)
+        {
+            List<RemoteProject> list = new List<RemoteProject>();
+            var lst = await user.Files.ListFolderAsync(string.Empty);
+            foreach(var item in lst.Entries)
+            {
+               var k =  await user.Files.DownloadAsync(path: "/"+ item.Name+"/preview.jpeg");
+                var stream = await k.GetContentAsStreamAsync();
+                MemoryStream t = new MemoryStream();
+                stream.CopyTo(t);
+                list.Add(new RemoteProject { name = item.Name, image = t });
+            }
+            return list;
         }
     }
 
@@ -270,10 +397,10 @@ namespace dp
 
     class Save //коммит
     {
-        public string message { get; set; }
-        public int number { get; set; }
-        public int que { get; set; }
-        public Bitmap preview { get; set; }
+        public string message { get; set; } //описание
+        public int number { get; set; } //айди проекта
+        public int que { get; set; } //айди коммита
+        public Bitmap preview { get; set; } //превью изображениия
         public Save(string m, int n, int q)
         {
             que = q;
@@ -289,7 +416,7 @@ namespace dp
         public void Open(PSDProject a)
         {
             //сохранить файл в дериктории исходного проекта f
-            string path = a.dir + a.name + "commited" + this.que +".psd";
+            string path = a.dir + this.message + ".psd";
             if (!File.Exists(path)) {
 
                 var file = File.Open("data/" + a.owner_id.Replace(':', '-') + "/" + a.name.Remove(a.name.Length - 4) + "/commit" + que, FileMode.Open);
