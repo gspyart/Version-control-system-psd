@@ -47,12 +47,18 @@ namespace PSDGitFinal
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
+                try { 
                 this.IsEnabled = true;
                 App.Authorization.CheckToken();
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-                //  App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
                 changePhoto();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             };
 
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
@@ -135,11 +141,16 @@ namespace PSDGitFinal
             }
             else
             {
+                try { 
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-                // App.Data.DatabaseDBLoad(App.Authorization.data.sender);
-                changePhoto();    
-
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                changePhoto();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             //else
             //{
