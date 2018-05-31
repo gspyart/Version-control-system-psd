@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using static System.Drawing.Image;
 using System.Net;
 using Dianoga.ImageMagick;
 using System.Collections.ObjectModel;
@@ -43,6 +44,8 @@ namespace DropbBoxLogIn
         public static event none logout;
         protected internal class UserData : INotifyPropertyChanged
         {
+            protected virtual void OnPropertyChanged(string propertyName) { PropertyChangedEventHandler handler = PropertyChanged; if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); }
+
             public event PropertyChangedEventHandler PropertyChanged;
             protected internal class Jsondata
             {
@@ -51,6 +54,8 @@ namespace DropbBoxLogIn
             }
             public User _sender { get { return sender; } set { sender = value; } }
             public User sender;// активный пользователь
+            public byte[] ava;
+            public byte[] Ava { get { return ava; } set { ava = value; OnPropertyChanged("ava"); } }
             public DropboxClient client; //api of active user
             private List<User> activeUsers = new List<User>();
             public List<User> ActiveUsers { get { return activeUsers; } set { PropertyChanged(this, new PropertyChangedEventArgs("")); activeUsers = value; } }

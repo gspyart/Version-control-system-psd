@@ -176,10 +176,25 @@ namespace dp
                             Save o = new Save(data2.GetString(3), data2.GetInt32(2), data2.GetInt32(1));
                             if (data.GetInt32(0) == data2.GetInt32(2))
                             {
-                               // var ms = Decompress(File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + o.que, FileMode.Open));
-                                //o.preview = new Bitmap(ms);        ломается
+
+                                var ms = Decompress(File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + o.que, FileMode.Open));
+                                var t = File.Create("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img");
+                                foreach(var item in ms.ToArray())
+                                {
+                                    t.WriteByte(item);
+                                }
+                                ms.Close();
+                                t.Close();
+                                    
+                                //var of = File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img", FileMode.Open);
+                                var image = new MagickImage("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img") ;
+                                var mem = new MemoryStream();
+                                image.ToBitmap().Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);       //ломается
+                                o.preview = mem.ToArray();
+                                mem.Close();
+                                  
                                 m.AddCommit(o);
-                                //ms.Close();
+                                ms.Close();
                             }
 
                         }
@@ -434,6 +449,9 @@ namespace dp
                 m_sqlCmd.CommandText = "INSERT INTO Commits (commit_number, Project_id, message) values (" + ns.que + "," + this.id + ",'" + ns.message + "')";
                 m_sqlCmd.ExecuteNonQuery();
                 m_dbConn.Close();
+
+              
+
                 AddCommit(ns);
                 var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + (Commits.Count - 1));
                 var tr = File.Open(dir + name, FileMode.Open);
@@ -442,6 +460,23 @@ namespace dp
                 o.Close();
                 tr.Close();
                 t.Close();
+
+                //дублирование кода
+                var ms = Data.Decompress(File.Open("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + ns.que, FileMode.Open));
+                var tt = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/img");
+                foreach (var item in ms.ToArray())
+                {
+                    tt.WriteByte(item);
+                }
+                ms.Close();
+                tt.Close();
+                var image = new MagickImage("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/img");
+                var mem = new MemoryStream();
+                image.ToBitmap().Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);       //ломается
+                ns.preview = mem.ToArray();
+                mem.Close();
+                ms.Close();
+                //======================
                 // ломается
                 // var ms = Data.Decompress(File.Open("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + ns.que, FileMode.Open));
                 // ns.preview = new Bitmap(ms);
@@ -535,7 +570,7 @@ namespace dp
         public string message { get; set; } //описание
         public int number { get; set; } //айди проекта
         public int que { get; set; } //айди коммита
-        public Bitmap preview { get; set; } //превью изображениия
+        public byte[] preview { get; set; } //превью изображениия
         public Save(string m, int n, int q)
         {
             que = q;

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Net;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -47,7 +51,8 @@ namespace PSDGitFinal
                 App.Authorization.CheckToken();
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-              //  App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                //  App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                changePhoto();
             };
 
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
@@ -90,6 +95,40 @@ namespace PSDGitFinal
                 }
             };
 
+            void changePhoto()
+            {
+                
+                var t = App.Authorization.data.client.Users.GetAccountAsync(App.Authorization.data.sender.id);
+                t.Wait();
+                WebRequest requestPic = WebRequest.Create(t.Result.ProfilePhotoUrl);
+                WebResponse responsePic = requestPic.GetResponse();
+                var ms = responsePic.GetResponseStream();
+                var image = System.Drawing.Image.FromStream(ms);
+                var mystream = new MemoryStream();
+                image.Save(mystream, image.RawFormat);
+                using (BinaryReader br = new BinaryReader(mystream))
+                {
+                    App.Authorization.data.Ava = br.ReadBytes((int)mystream.Length);
+                }
+                //========
+                var fil = File.Create("data/img.jpg");
+                List<byte> list = new List<byte>();
+                foreach (var byt in mystream.ToArray())
+                {
+                    fil.WriteByte(byt);
+                    list.Add(byt);
+                }
+                mystream.Close();
+                fil.Close();
+                App.Authorization.data.Ava = list.ToArray();
+                avka.ImageSource = new BitmapImage(new Uri(@"D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\data\img.jpg"));
+                //========
+
+                ms.Close();
+                responsePic.Close();
+                requestPic.Abort();
+
+            }
             if (!App.Authorization.isOnline())
             {
                 logout_openAuth();
@@ -98,8 +137,8 @@ namespace PSDGitFinal
             {
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-               // App.Data.DatabaseDBLoad(App.Authorization.data.sender);
-
+                // App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                changePhoto();    
 
             }
             //else
@@ -188,6 +227,22 @@ namespace PSDGitFinal
             this.IsEnabled = false;
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
+        }
+   
+
+        private void SearchString_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ObservableCollection<PSDProject> SearchResult = new ObservableCollection<PSDProject>();
+            Regex SearchRequest = new Regex(SearchString.Text);
+
+            foreach (var Project in App.Data.UserProjects)
+            {
+                if (SearchRequest.IsMatch(Project.name) == true)
+                {
+                    SearchResult.Add(Project);
+                }
+            }
+            Tagging.ItemsSource = SearchString.Text.Length == 0 ? App.Data.UserProjects : SearchResult;
         }
         //private void Db_files(object sender, RoutedEventArgs e)
         //{

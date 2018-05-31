@@ -1,4 +1,3 @@
-D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\PSDGitFinal.csprojResolveAssemblyReference.cache
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\MainWindow.g.cs
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\App.g.cs
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\GeneratedInternalTypeHelper.g.cs
@@ -45,3 +44,7 @@ D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\commi
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\commit.baml
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\dropbox_files.g.cs
 D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\dropbox_files.baml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\CircularProgressBar.baml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\CircularProgressBar.g.cs
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\ButtonRippleAnimation.baml
+D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\obj\Debug\PSDGitFinal.csprojResolveAssemblyReference.cache
