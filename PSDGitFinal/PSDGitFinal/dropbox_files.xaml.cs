@@ -35,13 +35,13 @@ namespace PSDGitFinal
         public dropbox_files()
         {
 
-            this.DataContext = this;
-            load();
-            InitializeComponent();
-            Projects.SelectionChanged += (a, b) =>
-            {
-                App.Data.Download(App.Authorization.data.client, (RemoteProject)Projects.SelectedItem, App.Authorization.data.sender);
-            };
+            //this.DataContext = this;
+            //load();
+            //InitializeComponent();
+            //Projects.SelectionChanged += (a, b) =>
+            //{
+            //    Data.Download(App.Authorization.data.client, ((RemoteProject)Projects.SelectedItem).name, App.Authorization.data.sender);
+            //};
 
         }
     }

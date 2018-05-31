@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         x:Name="AppWindow"
         WindowStyle="None"
+  
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
     
@@ -119,11 +120,9 @@
                                                 Delete Project
                                                 </Button>
                                                 <Button Click="DB_Upload" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
-                                                    Uload Project
+                                                 Синхронизировать
                                                 </Button>
-                                                <Button Click="Db_files" WindowChrome.IsHitTestVisibleInChrome="True"  Margin="5 0 5 0"  VerticalAlignment="Center" Grid.Column="1" Foreground="Black" Background="#0062ff" Width="Auto" Height="Auto">
-                                                   dropbox files
-                                                </Button>
+                                               
                                             </StackPanel >
                                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                 <StackPanel Margin="0 0 20 0" Orientation="Horizontal" VerticalAlignment="Center">

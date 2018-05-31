@@ -136,6 +136,7 @@ namespace DropbBoxLogIn
             try
             {
                 await data.client.Users.GetCurrentAccountAsync();
+
             }
             catch (DropboxException ex)
             {

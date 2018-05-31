@@ -13,6 +13,7 @@ using System.IO.Compression;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 using System.Data.SQLite;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -34,20 +35,19 @@ namespace PSDGitFinal
         PSDProject selected;
         public MainWindow()
         {
-            commit ct = new commit();
             InitializeComponent();
-
+            commit ct = new commit();
             Tagging.DataContext = App.Data;
             commits.DataContext = selected;
 
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
-
                 this.IsEnabled = true;
                 App.Authorization.CheckToken();
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
+              //  App.Data.DatabaseDBLoad(App.Authorization.data.sender);
             };
 
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
@@ -79,9 +79,15 @@ namespace PSDGitFinal
 
             commits.SelectionChanged += (a, b) =>
             {
+                try { 
                 Save t = (Save)commits.SelectedItem;
                 // MessageBox.Show("номер коммита " + t.que.ToString());
                 t.Open((PSDProject)Tagging.SelectedItem);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Uncorrect selected item: " + ex.Message);
+                }
             };
 
             if (!App.Authorization.isOnline())
@@ -92,6 +98,9 @@ namespace PSDGitFinal
             {
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
+               // App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+
+
             }
             //else
             //{
@@ -136,13 +145,15 @@ namespace PSDGitFinal
         }
         private async void DB_Upload(object sender, RoutedEventArgs e)
         {
+            try { 
             PSDProject o = (PSDProject)Tagging.SelectedItem;
-            Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client);
-
-
-
-            //     App.Authorization.data.client.Files
-
+            Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client, App.Authorization.data.sender);
+                //     App.Authorization.data.client.Files
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Не выбран проект " + ex.Message);
+            }
 
         }
         private void DB_UploadAll(object sender, RoutedEventArgs e)
@@ -178,10 +189,10 @@ namespace PSDGitFinal
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
-        private void Db_files(object sender, RoutedEventArgs e)
-        {
-            dropbox_files dwin = new dropbox_files();
-            dwin.Show();
-        }
+        //private void Db_files(object sender, RoutedEventArgs e)
+        //{
+        //    dropbox_files dwin = new dropbox_files();
+        //    dwin.Show();
+        //}
     }
 }
