@@ -238,6 +238,7 @@ namespace PSDGitFinal
             try
             {
                 PSDProject o = (PSDProject)Tagging.SelectedItem;
+                o.off();
                 App.Data.DeleteProject(o);
 
             }
