@@ -65,6 +65,21 @@ namespace dp
             return k;
         }
 
+        public bool ProjectExist(string name, string owner)
+        {
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+            m_dbConn.Open();
+            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            m_sqlCmd.CommandText = "Select * from Projects where project_name = '" + name + "' and owner= '" + owner + "'";
+            var data = m_sqlCmd.ExecuteReader();
+
+            if (data.HasRows)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void AddProject(PSDProject b) //добавить проект
         {
             UserProjects.Add(b);

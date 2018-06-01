@@ -312,6 +312,7 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="no-profile.jpg" />
     <Resource Include="App_Data\Dianoga Tools\imagemagick\magic.xml" />
     <Content Include="App_Data\Dianoga Tools\imagemagick\magick.exe" />
     <Content Include="App_Data\Dianoga Tools\mozjpeg_3.1_x86\jpegtran.exe" />

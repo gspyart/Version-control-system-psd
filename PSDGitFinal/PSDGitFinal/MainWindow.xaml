@@ -621,7 +621,7 @@
                                             BorderBrush="Black"
                                             
                                             BorderThickness="0" 
-                                            CornerRadius="8"
+                                            CornerRadius="15"
                                             SnapsToDevicePixels="True"
                                             UseLayoutRounding="True"/>
                                     <ScrollViewer FontSize="12" 

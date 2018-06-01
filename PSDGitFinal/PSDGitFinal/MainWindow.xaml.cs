@@ -49,11 +49,13 @@ namespace PSDGitFinal
             {
                 try { 
                 this.IsEnabled = true;
-                App.Authorization.CheckToken();
-                UsernameText.Text = App.Authorization.data.sender.username;
+                    this.Visibility = Visibility.Visible;
+                    UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
                 changePhoto();
+                App.Authorization.CheckToken();
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+               
                 }
                 catch (Exception ex)
                 {
@@ -101,51 +103,53 @@ namespace PSDGitFinal
                 }
             };
 
-            void changePhoto()
+            async void changePhoto()
             {
-                
-                var t = App.Authorization.data.client.Users.GetAccountAsync(App.Authorization.data.sender.id);
-                t.Wait();
-                WebRequest requestPic = WebRequest.Create(t.Result.ProfilePhotoUrl);
-                WebResponse responsePic = requestPic.GetResponse();
-                var ms = responsePic.GetResponseStream();
-                var image = System.Drawing.Image.FromStream(ms);
-                var mystream = new MemoryStream();
-                image.Save(mystream, image.RawFormat);
-                using (BinaryReader br = new BinaryReader(mystream))
-                {
-                    App.Authorization.data.Ava = br.ReadBytes((int)mystream.Length);
-                }
-                //========
-                var fil = File.Create("img.jpg");
-                List<byte> list = new List<byte>();
-                foreach (var byt in mystream.ToArray())
-                {
-                    fil.WriteByte(byt);
-                    list.Add(byt);
-                }
-                mystream.Close();
-                fil.Close();
-                App.Authorization.data.Ava = list.ToArray();
-                avka.ImageSource = new BitmapImage(new Uri(@"D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\img.jpg"));
-                //========
 
+                var t = await App.Authorization.data.client.Users.GetAccountAsync(App.Authorization.data.sender.id);
+                //t.Wait();
+                //BitmapImage asd = new BitmapImage();
+                //if (t.Result.ProfilePhotoUrl == null)
+                //{
+                //    MessageBox.Show("net");
+                //    asd.BeginInit();
+                //    asd.UriSource = new Uri(@"no-profile.jpg");
+                //    asd.EndInit();
+                //    App.Authorization.data.Ava = asd;
+                //    avka.ImageSource = asd;
+                //    return;
+                //}
+                WebRequest requestPic = WebRequest.Create(t.ProfilePhotoUrl);
+                WebResponse responsePic = requestPic.GetResponse();
+                
+                var ms = responsePic.GetResponseStream();
+                BitmapImage asd = new BitmapImage();
+                asd.BeginInit();
+                asd.StreamSource = ms;
+                asd.EndInit();
+                App.Authorization.data.Ava = asd;
+                avka.ImageSource = asd;
+                //========
                 ms.Close();
                 responsePic.Close();
                 requestPic.Abort();
+                
 
             }
             if (!App.Authorization.isOnline())
             {
+                this.Visibility = Visibility.Hidden;
                 logout_openAuth();
             }
             else
             {
-                try { 
+                try {
+                
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
                 changePhoto();
+                App.Authorization.CheckToken();
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
                 }
                 catch (Exception ex)
                 {
@@ -172,13 +176,18 @@ namespace PSDGitFinal
         {
             try
             {
+              
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
                 openFileDialog.CheckFileExists = true;
                 openFileDialog.Multiselect = false;
                 if (openFileDialog.ShowDialog() == true) //Добавление проекта в бд и загрузка всех проектов из бд в программу с "нормальным" id
                 {
-
+                    if (App.Data.ProjectExist(openFileDialog.SafeFileName, App.Authorization.data.sender.id))
+                    {
+                        MessageBox.Show("Проект существует");
+                        return;
+                    }
                     PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
                     //App.Data.AddProject(b);
                     App.Data.DatabaseInsert(b);
@@ -246,6 +255,7 @@ namespace PSDGitFinal
         private void logout_openAuth()
         {
             this.IsEnabled = false;
+            this.Visibility = Visibility.Hidden;
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }

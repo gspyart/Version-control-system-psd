@@ -54,8 +54,8 @@ namespace DropbBoxLogIn
             }
             public User _sender { get { return sender; } set { sender = value; } }
             public User sender;// активный пользователь
-            public byte[] ava;
-            public byte[] Ava { get { return ava; } set { ava = value; OnPropertyChanged("ava"); } }
+            public BitmapImage ava;
+            public BitmapImage Ava { get { return ava; } set { ava = value; OnPropertyChanged("ava"); } }
             public DropboxClient client; //api of active user
             private List<User> activeUsers = new List<User>();
             public List<User> ActiveUsers { get { return activeUsers; } set { PropertyChanged(this, new PropertyChangedEventArgs("")); activeUsers = value; } }
