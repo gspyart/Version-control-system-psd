@@ -11,7 +11,7 @@
         AllowsTransparency="True"
         Title="MainWindow" 
         MaxWidth="900" 
-        MaxHeight="650" Width="1000" Height="600">
+        MaxHeight="950" Width="1000" Height="750">
     <Window.Resources>
 
 
@@ -430,7 +430,7 @@
                                                     Orientation="Horizontal">
                                             <Button Style="{StaticResource SystemIconButton}" 
                                                     Command="{Binding MenuCommand}">
-                                                <Image Width="20"/>
+                                                <Image Width="0"/>
                                             </Button>
                                             <Viewbox Margin="0 10 0 10">
                                                 <TextBlock Foreground="#46435b"
@@ -457,17 +457,19 @@
 
                                                 <Button Click="DB_Upload" 
                                                         WindowChrome.IsHitTestVisibleInChrome="True" 
-                                                        Margin="20 0 5 0" 
+                                                        Margin="0 0 5 0" 
                                                         Grid.Column="1" 
                                                         VerticalAlignment="Center" 
                                                         HorizontalAlignment="Left" 
-                                                        Template="{StaticResource AnimatedProjectButton}"
-                                                     Width="130" 
+                                                      Background="Transparent"
+                                                     Width="110" 
+                                                       
+                                                        BorderBrush="Transparent"
                                                         Height="29">
 
                                                     <StackPanel HorizontalAlignment="Center" 
                                                                 Orientation="Horizontal">
-                                                        <Label VerticalAlignment="Center"  FontSize="11" Foreground="White">Synchronization</Label>
+                                                        <Label VerticalAlignment="Center"  FontSize="11"  Foreground="#49465a">Synchronization</Label>
                                                     </StackPanel>
                                                 </Button>
                                             </StackPanel >
@@ -534,7 +536,7 @@
                 <LinearGradientBrush.GradientStops>
                     <GradientStop Color="#1a1823" 
                                   Offset="0.5"/>
-                    <GradientStop Color="#FF260D29" 
+                    <GradientStop Color="#211930" 
                                   Offset="1.0"/>
 
                 </LinearGradientBrush.GradientStops>
@@ -588,8 +590,8 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height ="0.25*"/>
-                    <RowDefinition Height="0.75*"/>
+                    <RowDefinition Height ="0.20*"/>
+                    <RowDefinition Height="0.8*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Background="Transparent" 
                             Margin="0 10 0 0" 
@@ -872,7 +874,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush Opacity="0.4" StartPoint="0,1" EndPoint="1,0">
                                             <GradientStop Offset="0" Color="#1e1c29"/>
-                                            <GradientStop x:Name="Grad" Offset="0.1" Color="#FF403863"/>
+                                            <GradientStop x:Name="Grad" Offset="0.1" Color="#2b2742"/>
 
                                             <GradientStop Offset="0.4" Color="#1e1c29"/>
                                             <LinearGradientBrush.Transform>
@@ -894,14 +896,14 @@
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.name, Mode=TwoWay}"  
                                        FontSize="22" 
                                        Foreground="White">
-                                Hello
+                                Hello, here will be project title
                             </TextBlock>
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.dir, Mode=TwoWay}" 
                                        x:Name="ArtistText" 
                                        Margin="0 8 0 0" 
                                        Foreground="#635e7e"
                                        FontSize="11">
-                                Artist: Name
+                                and here is directory :)
                             </TextBlock>
                         </StackPanel>
                         <StackPanel Margin="0 0 25 0" 
