@@ -11,7 +11,7 @@
         AllowsTransparency="True"
         Title="MainWindow" 
         MaxWidth="900" 
-        MaxHeight="600">
+        MaxHeight="650" Width="1000" Height="600">
     <Window.Resources>
 
 
@@ -406,7 +406,7 @@
                                     <Grid.RowDefinitions>
 
                                         <!-- Title Bar -->
-                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=42}" />
+                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=59}" />
                                         <!-- Drop shadow -->
                                         <RowDefinition Height="Auto" />
                                         <!-- Window Content -->
@@ -421,20 +421,20 @@
                                       UseLayoutRounding="True">
                                         <Grid.ColumnDefinitions>
                                             <!-- Icon -->
-                                            <ColumnDefinition Width="0.25*" />
+                                            <ColumnDefinition Width="0.30*" />
                                             <!-- Title -->
-                                            <ColumnDefinition Width="0.75*" />
+                                            <ColumnDefinition Width="0.70*" />
                                         </Grid.ColumnDefinitions>
                                         <!-- Icon -->
                                         <StackPanel Grid.Column="0" 
                                                     Orientation="Horizontal">
                                             <Button Style="{StaticResource SystemIconButton}" 
                                                     Command="{Binding MenuCommand}">
-                                                <Image Width="30"/>
+                                                <Image Width="20"/>
                                             </Button>
-                                            <Viewbox Margin="10 10 0 10">
+                                            <Viewbox Margin="0 10 0 10">
                                                 <TextBlock Foreground="#46435b"
-                                                           Text="SAFER" />
+                                                           Text="PSDGit" />
                                             </Viewbox>
                                         </StackPanel>
                                         <!-- Window Buttons -->
@@ -443,30 +443,31 @@
                                                 <Button WindowChrome.IsHitTestVisibleInChrome="True"
                                                         Click="Open_dialog"  
                                                         Grid.Column="1"
+                                                        Margin="20 0 0 0"
                                                         VerticalAlignment="Center" 
                                                         HorizontalAlignment="Left" 
                                                         Template="{StaticResource AnimatedProjectButton}"
-                                                        Width="100" 
-                                                        Height="27">
+                                                        Width="120" 
+                                                        Height="29">
                                                     <StackPanel HorizontalAlignment="Center" 
                                                                 Orientation="Horizontal">
-                                                        <Label VerticalAlignment="Center" Foreground="White">Add Project</Label>
+                                                        <Label VerticalAlignment="Center" FontSize="11"  Foreground="White">Add Project</Label>
                                                     </StackPanel>
                                                 </Button>
 
                                                 <Button Click="DB_Upload" 
                                                         WindowChrome.IsHitTestVisibleInChrome="True" 
-                                                        Margin="5 0 5 0" 
+                                                        Margin="20 0 5 0" 
                                                         Grid.Column="1" 
                                                         VerticalAlignment="Center" 
                                                         HorizontalAlignment="Left" 
                                                         Template="{StaticResource AnimatedProjectButton}"
-                                                        Width="100" 
-                                                        Height="27">
+                                                     Width="130" 
+                                                        Height="29">
 
                                                     <StackPanel HorizontalAlignment="Center" 
                                                                 Orientation="Horizontal">
-                                                        <Label VerticalAlignment="Center" Foreground="White">Synchronization</Label>
+                                                        <Label VerticalAlignment="Center"  FontSize="11" Foreground="White">Synchronization</Label>
                                                     </StackPanel>
                                                 </Button>
                                             </StackPanel >
@@ -476,9 +477,10 @@
                                                             Orientation="Horizontal" 
                                                             VerticalAlignment="Center">
                                                     <TextBlock HorizontalAlignment="Center" 
-                                                               Margin="0 0 20 0">
+                                                               Margin="0 0 0 0">
                                                     <Hyperlink Foreground="#46435b">
-                                                        <TextBlock Text="TEST LINK"/>
+                                                        <TextBlock Text="../projects/"/>
+                                                        <Image Width="20" Height="20" Source="C:\Users\Vlad\Desktop\design\c.jpg"></Image>
                                                     </Hyperlink>
                                                 </TextBlock>
                                                     <!--
@@ -581,21 +583,21 @@
         </Border>
         <Grid  Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.25*" />
-                <ColumnDefinition Width="0.75*" />
+                <ColumnDefinition Width="0.30*" />
+                <ColumnDefinition Width="0.70*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height ="0.17*"/>
-                    <RowDefinition Height="0.83*"/>
+                    <RowDefinition Height ="0.25*"/>
+                    <RowDefinition Height="0.75*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Background="Transparent" 
                             Margin="0 10 0 0" 
                             Grid.Row="0">
-                    <TextBox Background="#FF373542" 
+                    <TextBox Background="#272533" 
                              Tag="Search" 
                              CaretBrush="Blue" 
-                             Margin="5 0 5 0"  
+                             Margin="5 10 5 20"  
                              Grid.Row="2" 
                              x:Name="SearchString"
                              TextChanged="SearchString_TextChanged">
@@ -604,7 +606,7 @@
                                 <Grid Margin="8 0 8 0"
                                       SnapsToDevicePixels="True" 
                                       UseLayoutRounding="True"
-                                      Height="25">
+                                      Height="30">
                                     <Grid.BitmapEffect>
                                         <DropShadowBitmapEffect x:Name="SearchDropShadow" 
                                                                 Opacity="0" 
@@ -615,17 +617,21 @@
                                     <Border Background="{TemplateBinding Background}" 
                                             x:Name="Bd" 
                                             BorderBrush="Black"
+                                            
                                             BorderThickness="0" 
-                                            CornerRadius="5.5"
+                                            CornerRadius="8"
                                             SnapsToDevicePixels="True"
                                             UseLayoutRounding="True"/>
                                     <ScrollViewer FontSize="12" 
                                                   Margin="3 1 0 0" 
+                                                  
                                                   VerticalAlignment="Center"
                                                   Foreground="Black" 
                                                   x:Name="PART_ContentHost"/>
                                     <Label FontSize="12"
-                                           Visibility="Collapsed" 
+                                           Visibility="Collapsed"
+                                           Padding="16 0 16 0"
+                                           Foreground="#605c73"
                                            VerticalAlignment="Center" 
                                            Content="{TemplateBinding Tag}" 
                                            x:Name="Watermark" />
@@ -715,11 +721,13 @@
                             <ColumnDefinition Width="0.4*" />
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" 
+                               FontSize="10"
                                Foreground="#46435b" 
                                Content="PROJECT NAME"
                                VerticalContentAlignment="Center"
                                HorizontalAlignment="Center"/>
                         <Label Grid.Column="1" 
+                                 FontSize="10"
                                Foreground="#46435b" 
                                Content="DATE" 
                                VerticalContentAlignment="Center" 
@@ -738,6 +746,7 @@
                              ItemsSource="{Binding UserProjects}"
                              x:Name="Tagging" 
                              BorderThickness="0" >
+      
                         <ListBox.Style>
                             <Style>
                                 <Style.Triggers>
@@ -850,12 +859,12 @@
             <DockPanel SnapsToDevicePixels="True" x:Name="ProjectDetails"
                         Margin="20 20 20 0" 
                         Grid.Column="1">
-                <Grid Height="65" 
+                <Grid Height="95" 
                       VerticalAlignment="Top"
                       DockPanel.Dock="Top">
                     <Border  
                             x:Name="ProjectMask" 
-                            CornerRadius="11">
+                            CornerRadius="12">
 
                         <Border.Style>
                             <Style>
@@ -880,17 +889,17 @@
 
                     <Grid VerticalAlignment="Center">
                         <StackPanel Width="Auto" 
-                                    Margin="15 0 0 0" 
+                                    Margin="35 0 35 0" 
                                     VerticalAlignment="Top">
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.name, Mode=TwoWay}"  
-                                       FontSize="19" 
+                                       FontSize="22" 
                                        Foreground="White">
                                 Hello
                             </TextBlock>
                             <TextBlock Text="{Binding ElementName=Tagging, Path=SelectedItem.dir, Mode=TwoWay}" 
                                        x:Name="ArtistText" 
-                                       Margin="0 2 0 0" 
-                                       Foreground="MediumPurple"
+                                       Margin="0 8 0 0" 
+                                       Foreground="#635e7e"
                                        FontSize="11">
                                 Artist: Name
                             </TextBlock>
@@ -899,7 +908,7 @@
                                     HorizontalAlignment="Right" 
                                     Width="Auto" 
                                     Orientation="Horizontal" 
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="top">
                             <Button Template="{StaticResource RegularButton}" 
                                     Margin="0 15 0 0" 
                                     Foreground="#46435b" 
@@ -913,8 +922,8 @@
                         </StackPanel>
                     </Grid>
                 </Grid>
-                <Label DockPanel.Dock="Top" Margin="0 3 0 0" 
-                       Foreground="Gray">
+                <Label DockPanel.Dock="Top" Padding="0 25 0 15" Margin="0 3 0 0" 
+                       Foreground="#49465a">
                     Screenshots
                 </Label>
                 <Border x:Name="HeightElem"/>
@@ -925,8 +934,10 @@
                          ItemsSource="{Binding Commits}"
                          BorderThickness="0"
                          DockPanel.Dock="Top" 
+                       
                          Height="{Binding ElementName=HeightElem, Path=ActualHeight}"
                          >
+                    
                     <!--
                     <ListBox.Style>
                         <Style>
@@ -944,10 +955,13 @@
                     <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
+                        
                     </ItemsPanelTemplate>
 
                 </ListBox.ItemsPanel>
+                    
                 <ListBox.ItemContainerStyle>
+                    
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Margin" Value="0 0 20 0"/>
                         <Setter Property="Template">
@@ -1043,11 +1057,11 @@
         <Grid Grid.Row="1">
             <Viewbox  HorizontalAlignment="Right" 
                       VerticalAlignment="Bottom"
-                      Height="60"
-                      Width="140">
+                      Height="80"
+                      Width="200">
                 <StackPanel Orientation="Horizontal" 
-                            Margin="0 0 18 15">
-                    <StackPanel Margin="0 5 4 0">
+                            Margin="0 0 35 20">
+                    <StackPanel Margin="0 10 20 0">
                         <TextBlock DockPanel.Dock="Top" 
                                    x:Name="UsernameText" 
                                    Foreground="#fff" 
@@ -1062,11 +1076,11 @@
                                 Click="Button_logout" 
                                 Content="Log Out"/>
                     </StackPanel>
-                    <Ellipse Stroke="#1e1c29" 
-                             StrokeThickness="4.5" 
-                             Width="50"
+                    <Ellipse Stroke="Transparent" 
+                             StrokeThickness="2" 
+                             Width="60"
                              DataContext="App.Authorization.data"
-                             Height="50">
+                             Height="60">
                         <Ellipse.Fill>
                             <ImageBrush x:Name="avka" ImageSource="{Binding Ava, Mode=TwoWay}"/>
                         </Ellipse.Fill>
@@ -1075,17 +1089,18 @@
             </Viewbox>
             <StackPanel Orientation="Horizontal" 
                         VerticalAlignment="Bottom" 
-                        HorizontalAlignment="Center" 
-                        Margin="0 0 0 8" 
+                        HorizontalAlignment="Left" 
+                        Margin="0 0 0 25" 
                         ClipToBounds="True" 
                         SnapsToDevicePixels="True"
                         >
                 <ProgressBar Minimum="0" 
                              Maximum="100" 
                              Value="60" 
-                             Width="200" 
-                             Height="3"
-                             Margin="8">
+                             Width="500" 
+                             Height="4"
+                             Margin="25 0 25 0">
+
                     <ProgressBar.Template>
                         <ControlTemplate>
                             <Grid Width="{TemplateBinding Width}" 
@@ -1101,9 +1116,9 @@
                                         <LinearGradientBrush StartPoint="0,0.5" 
                                                              EndPoint="1,0.5">
                                             <LinearGradientBrush.GradientStops>
-                                                <GradientStop Color="#FFF748A7"  
+                                                <GradientStop Color="#1c68ef"  
                                                               Offset="0.0"/>
-                                                <GradientStop  Color="#FF6CDBFF"
+                                                <GradientStop  Color="#9866bb"
                                                               Offset="0.8"/>
                                             </LinearGradientBrush.GradientStops>
                                         </LinearGradientBrush>
@@ -1123,8 +1138,10 @@
                     </ProgressBar.Template>
                 </ProgressBar>
                 <TextBlock Margin="15 0 0 0" 
-                           Foreground="Gray" 
+                           FontSize="11"
+                           Foreground="#9a90b2" 
                            Text="4.2/6.0GB"/>
+                
             </StackPanel>
         </Grid>
     </Grid>

@@ -307,9 +307,9 @@
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-                    <TextBlock FontSize="45" Margin="0 10 0 0" HorizontalAlignment="Center" Foreground="White">HI <Span Foreground="Blue">bro</Span>!</TextBlock>
+                    <TextBlock FontSize="45" Margin="0 10 0 0" HorizontalAlignment="Center" Foreground="White">Hi, <Span Foreground="#0264fb">bro</Span>!</TextBlock>
                     <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>
-                    <Button Click="Button_Click_1" Template="{StaticResource AnimatedProjectButton}"
+                    <Button Click="Button_Click_1"  Template="{StaticResource AnimatedProjectButton}"
                             Margin="0 30 0 0"  Grid.Column="1" Width="160" Height="35">
                         <Label VerticalAlignment="Center" HorizontalAlignment="Center">
                             Log in to DropBox

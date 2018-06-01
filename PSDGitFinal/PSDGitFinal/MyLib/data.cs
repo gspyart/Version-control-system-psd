@@ -69,6 +69,24 @@ namespace dp
         {
             UserProjects.Add(b);
         }
+        public void DeleteProject(PSDProject proj)
+        {
+            SQLiteConnection m_dbConn = new SQLiteConnection("Data Source=projects_database.db; Version=3;");
+            m_dbConn.Open();
+            SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
+            m_sqlCmd.CommandText = "Delete from Commits where Project_id = " + proj.id;
+            m_sqlCmd.ExecuteNonQuery();
+            m_sqlCmd.CommandText = "Delete from Projects where id = " + proj.id + " and owner = '" + proj.owner_id + "'";
+            m_sqlCmd.ExecuteNonQuery();
+            UserProjects.Remove(proj);
+            var filelist = new DirectoryInfo(@"data/" + proj.owner_id.Replace(':', '-') + "/" + proj.name.Remove(proj.name.Length - 4));
+            FileInfo[] Files = filelist.GetFiles();
+            foreach(var item in Files)
+            {
+                item.Delete();
+            }
+            Directory.Delete("data/" + proj.owner_id.Replace(':', '-') + "/" + proj.name.Remove(proj.name.Length - 4));
+        }
         public static void metadata(PSDProject a, FileStream k) // формирование методанных о проекте
         {
             List<Save> infojson = a.Commits.ToList(); //сериализация метаданных

@@ -93,9 +93,9 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <!-- Accent Button With Ripple Effect -->
-    <ControlTemplate x:Key="AnimatedProjectButton" TargetType="Button">
-        <Border SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand" CornerRadius="15" Background="#0062ff" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
-            <local:RippleDecorator Background="#0062ff" HighlightBackground="{TemplateBinding Background}">
+    <ControlTemplate x:Key="AnimatedProjectButton" TargetType="Button" >
+        <Border SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand"  CornerRadius="15" Background="#0062ff" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+            <local:RippleDecorator Background="#0062ff" Foreground="#fff" HighlightBackground="{TemplateBinding Background}">
                 <local:RippleDecorator.OpacityMask>
                     
                     <VisualBrush>

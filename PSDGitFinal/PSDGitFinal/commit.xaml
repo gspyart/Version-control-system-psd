@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSDGitFinal"
         mc:Ignorable="d"
-        Title="commit" Height="150" Width="250">
+        Title="Commit title" Height="100" Width="250">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="commit_name" Grid.Row="1" Height="30" Width="200" Background="Gray"></TextBox>
-        <Button Click="ok"  Grid.Row="2">ОК</Button>
+        <TextBox x:Name="commit_name" Grid.Row="0" Height="auto" Width="auto" Background="Gray"></TextBox>
+        <Button Click="ok"  Grid.Row="1">ОК</Button>
     </Grid>
 </Window>

@@ -117,7 +117,7 @@ namespace PSDGitFinal
                     App.Authorization.data.Ava = br.ReadBytes((int)mystream.Length);
                 }
                 //========
-                var fil = File.Create("data/img.jpg");
+                var fil = File.Create("img.jpg");
                 List<byte> list = new List<byte>();
                 foreach (var byt in mystream.ToArray())
                 {
@@ -127,7 +127,7 @@ namespace PSDGitFinal
                 mystream.Close();
                 fil.Close();
                 App.Authorization.data.Ava = list.ToArray();
-                avka.ImageSource = new BitmapImage(new Uri(@"D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\data\img.jpg"));
+                avka.ImageSource = new BitmapImage(new Uri(@"D:\AAA PSDGit\Version-control-system-psd\PSDGitFinal\PSDGitFinal\bin\Debug\img.jpg"));
                 //========
 
                 ms.Close();
@@ -217,6 +217,7 @@ namespace PSDGitFinal
         {
             selected = (PSDProject)Tagging.SelectedItem;
             commits.DataContext = selected;
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -225,7 +226,16 @@ namespace PSDGitFinal
         }
         private void Delete_project(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                PSDProject o = (PSDProject)Tagging.SelectedItem;
+                App.Data.DeleteProject(o);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Button_logout(object sender, RoutedEventArgs e)
@@ -239,9 +249,10 @@ namespace PSDGitFinal
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
-   
 
-        private void SearchString_TextChanged(object sender, TextChangedEventArgs e)
+
+   
+            private void SearchString_TextChanged(object sender, TextChangedEventArgs e)
         {
             ObservableCollection<PSDProject> SearchResult = new ObservableCollection<PSDProject>();
             Regex SearchRequest = new Regex(SearchString.Text);
@@ -255,10 +266,18 @@ namespace PSDGitFinal
             }
             Tagging.ItemsSource = SearchString.Text.Length == 0 ? App.Data.UserProjects : SearchResult;
         }
-        //private void Db_files(object sender, RoutedEventArgs e)
+
+        //private void commits_SelectionChanged(object sender, MouseButtonEventArgs e)
         //{
-        //    dropbox_files dwin = new dropbox_files();
-        //    dwin.Show();
+        //    try
+        //    {
+        //        ((Save)commits.SelectedItem).Open((PSDProject)Tagging.SelectedItem);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
         //}
+    
     }
 }
