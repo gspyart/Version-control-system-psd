@@ -28,15 +28,8 @@ using System.ComponentModel;
 using System.Data;
 using ImageMagick;
 using PSDGitFinal;
-namespace dp 
-    // k.Users.GetAccountAsync().Result.ProfilePhotoUrl
-    //
-    // НЕ ЗАБЫТЬ ДЕЛАТЬ МЕТАДАННЫЕ КАК СКАЧАЮТСЯ ПРООБРАЗЫ ПРОЕКТОВ С DROPBOX
-    //
-    //
-    //
-    //
-    //
+namespace dp    
+
 {
     class RemoteProject //проекты на dropbox
     {
@@ -96,7 +89,7 @@ namespace dp
             UserProjects.Remove(proj);
             var filelist = new DirectoryInfo(@"data/" + proj.owner_id.Replace(':', '-') + "/" + proj.name.Remove(proj.name.Length - 4));
             FileInfo[] Files = filelist.GetFiles();
-            foreach(var item in Files)
+            foreach (var item in Files)
             {
                 item.Delete();
             }
@@ -212,20 +205,20 @@ namespace dp
 
                                 var ms = Decompress(File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/commit" + o.que, FileMode.Open));
                                 var t = File.Create("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img");
-                                foreach(var item in ms.ToArray())
+                                foreach (var item in ms.ToArray())
                                 {
                                     t.WriteByte(item);
                                 }
                                 ms.Close();
                                 t.Close();
-                                    
+
                                 //var of = File.Open("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img", FileMode.Open);
-                                var image = new MagickImage("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img") ;
+                                var image = new MagickImage("data/" + m.owner_id.Replace(':', '-') + "/" + m.name.Remove(m.name.Length - 4) + "/img");
                                 var mem = new MemoryStream();
                                 image.ToBitmap().Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);       //ломается
                                 o.preview = mem.ToArray();
                                 mem.Close();
-                                  
+
                                 m.AddCommit(o);
                                 ms.Close();
                             }
@@ -259,7 +252,7 @@ namespace dp
         public async static void TryUpload(Tu cb, PSDProject a, Dropbox.Api.DropboxClient k, User user) //Синхронизация
         {
             try
-            {   
+            {
                 ListFolderResult z = new ListFolderResult();
                 void innerupload()
                 {
@@ -289,7 +282,7 @@ namespace dp
                     var h = Task.Run(() => k.Files.DownloadAsync(path: "/" + a.name.Remove(a.name.Length - 4) + "/metadata"));
                     h.Wait();
                     var str = await h.Result.GetContentAsStringAsync();
-                    List<Save> first = getmetadata(a);  
+                    List<Save> first = getmetadata(a);
                     List<Save> second = JsonConvert.DeserializeObject<List<Save>>(str);
                     string path = "data/" + a.owner_id.Replace(':', '-') + "/" + a.name.Remove(a.name.Length - 4);
                     if (first.Count > second.Count)
@@ -332,7 +325,7 @@ namespace dp
                 }
                 string path = "data/" + t.owner_id.Replace(':', '-') + "/" + t.name.Remove(t.name.Length - 4) + "/preview.jpeg";
                 //НЕ РАБОТАЕТ В ПРОЕКТАХ БЕЗ ПУТИ 
-                var image = new MagickImage(t.dir + t.name); 
+                var image = new MagickImage(t.dir + t.name);
                 var fc = File.Create(path);
                 image.ToBitmap().Save(fc, System.Drawing.Imaging.ImageFormat.Jpeg);
                 fc.Close();
@@ -370,7 +363,7 @@ namespace dp
             m_dbConn.Open();
             SQLiteCommand m_sqlCmd = m_dbConn.CreateCommand();
             m_sqlCmd.CommandText = "select id from Projects where project_name = " + "'" + projname.name + "'";
-            SQLiteDataReader data = m_sqlCmd.ExecuteReader();         
+            SQLiteDataReader data = m_sqlCmd.ExecuteReader();
             if (data.HasRows)
             {
                 MessageBox.Show("Проект существует");
@@ -381,7 +374,7 @@ namespace dp
                 {
                     foreach (var s in saves)
                     {
-                        m_sqlCmd2.CommandText = "select commit_number from Commits where commit_number = " + s.que ; //есть ли такой коммит
+                        m_sqlCmd2.CommandText = "select commit_number from Commits where commit_number = " + s.que; //есть ли такой коммит
                         SQLiteDataReader data2 = m_sqlCmd2.ExecuteReader();
                         if (!data2.HasRows) //если такого коммита нет, то..
                         {
@@ -390,7 +383,7 @@ namespace dp
                             m_sqlCmd3.CommandText = "INSERT into Commits (commit_number, Project_id, message) values (" + s.que + "," + id + ",'" + s.message + "')";
                             m_sqlCmd3.ExecuteNonQuery();
 
-                            var md = await user.Files.DownloadAsync(path: "/" + projname.name.Remove(projname.name.Length - 4) + "/commit" + s.que); 
+                            var md = await user.Files.DownloadAsync(path: "/" + projname.name.Remove(projname.name.Length - 4) + "/commit" + s.que);
                             var file = await md.GetContentAsStreamAsync();
 
                             var t = File.Create("data/" + myuser.id.Replace(':', '-') + "/" + projname.name.Remove(projname.name.Length - 4) + "/commit" + s.que);
@@ -399,7 +392,7 @@ namespace dp
                             t.Close();
                             projname.AddCommit(s);
                         }
-                        data2.Close();                                         
+                        data2.Close();
                     }
 
                 }
@@ -483,7 +476,7 @@ namespace dp
                 m_sqlCmd.ExecuteNonQuery();
                 m_dbConn.Close();
 
-              
+
 
                 AddCommit(ns);
                 var t = File.Create("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + (Commits.Count - 1));
@@ -505,12 +498,12 @@ namespace dp
                 tt.Close();
                 var image = new MagickImage("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/img");
                 var mem = new MemoryStream();
-                image.ToBitmap().Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);       //ломается
+                image.ToBitmap().Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);       
                 ns.preview = mem.ToArray();
                 mem.Close();
                 ms.Close();
                 //======================
-                // ломается
+             
                 // var ms = Data.Decompress(File.Open("data/" + owner_id.Replace(':', '-') + "/" + name.Remove(name.Length - 4) + "/commit" + ns.que, FileMode.Open));
                 // ns.preview = new Bitmap(ms);
 

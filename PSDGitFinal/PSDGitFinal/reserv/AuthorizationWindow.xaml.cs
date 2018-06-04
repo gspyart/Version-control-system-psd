@@ -21,6 +21,7 @@ namespace PSDGitFinal
     {
         public AuthorizationWindow()
         {
+            this.DataContext = App.Authorization.data;
             DropbBoxLogIn.Auth.SenderChanged += () => {
                 this.Close();
             };

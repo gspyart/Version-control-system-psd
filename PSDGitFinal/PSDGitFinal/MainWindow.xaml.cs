@@ -36,6 +36,14 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
+        //async void getspsace()
+        //{
+        //    var res = Task.Run(() => App.Authorization.data.client.Users.GetSpaceUsageAsync());
+        //    res.Wait();
+        //    App.Authorization.memory = res.Result.Used / 10000;
+        //    progress_bar.Value = App.Authorization.memory;
+        //}
+
         PSDProject selected;
         public MainWindow()
         {
@@ -49,13 +57,13 @@ namespace PSDGitFinal
             {
                 try { 
                 this.IsEnabled = true;
-                    this.Visibility = Visibility.Visible;
-                    UsernameText.Text = App.Authorization.data.sender.username;
+                this.Visibility = Visibility.Visible;
+                UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
                 changePhoto();
                 App.Authorization.CheckToken();
-                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
-               
+               App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+              //  getspsace();
                 }
                 catch (Exception ex)
                 {
@@ -103,9 +111,10 @@ namespace PSDGitFinal
                 }
             };
 
+        
             async void changePhoto()
             {
-
+                try { 
                 var t = await App.Authorization.data.client.Users.GetAccountAsync(App.Authorization.data.sender.id);
                 //t.Wait();
                 //BitmapImage asd = new BitmapImage();
@@ -133,7 +142,11 @@ namespace PSDGitFinal
                 ms.Close();
                 responsePic.Close();
                 requestPic.Abort();
-                
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
             }
             if (!App.Authorization.isOnline())
@@ -144,12 +157,14 @@ namespace PSDGitFinal
             else
             {
                 try {
-                
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
                 changePhoto();
                 App.Authorization.CheckToken();
                 App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+               //     getspsace();
+                    
+                    
                 }
                 catch (Exception ex)
                 {
@@ -206,8 +221,10 @@ namespace PSDGitFinal
         {
             try { 
             PSDProject o = (PSDProject)Tagging.SelectedItem;
+            if (o == null) throw new Exception("Пустой объект");
             Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client, App.Authorization.data.sender);
                 //     App.Authorization.data.client.Files
+            //getspsace();
             }
             catch (Exception ex)
             {
@@ -278,6 +295,42 @@ namespace PSDGitFinal
             Tagging.ItemsSource = SearchString.Text.Length == 0 ? App.Data.UserProjects : SearchResult;
         }
 
+        private void Button_Click_2(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show("kek");
+            try {
+            ((Save)sender).Open((PSDProject)Tagging.SelectedItem);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void commits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+       
+            try
+            {
+                ((Save)commits.SelectedItem).Open((PSDProject)Tagging.SelectedItem);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         //private void commits_SelectionChanged(object sender, MouseButtonEventArgs e)
         //{
         //    try
@@ -289,6 +342,6 @@ namespace PSDGitFinal
         //        MessageBox.Show(ex.Message);
         //    }
         //}
-    
+
     }
 }

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Net;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -32,6 +36,14 @@ namespace PSDGitFinal
     /// </summary>
     public partial class MainWindow : Window
     {
+        async void getspsace()
+        {
+            var res = Task.Run(() => App.Authorization.data.client.Users.GetSpaceUsageAsync());
+            res.Wait();
+            App.Authorization.memory = res.Result.Used / 10000;
+            progress_bar.Value = App.Authorization.memory;
+        }
+
         PSDProject selected;
         public MainWindow()
         {
@@ -43,11 +55,20 @@ namespace PSDGitFinal
             DropbBoxLogIn.Auth.SenderChanged += () => // событие при авторизации нового пользователя
             //надо исправить login событие
             {
+                try { 
                 this.IsEnabled = true;
-                App.Authorization.CheckToken();
+                this.Visibility = Visibility.Visible;
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-              //  App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+                changePhoto();
+                App.Authorization.CheckToken();
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+              //  getspsace();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             };
 
             DropbBoxLogIn.Auth.logout += () => // событие если пользователь вышел из аккаунта
@@ -90,17 +111,65 @@ namespace PSDGitFinal
                 }
             };
 
+        
+            async void changePhoto()
+            {
+                try { 
+                var t = await App.Authorization.data.client.Users.GetAccountAsync(App.Authorization.data.sender.id);
+                //t.Wait();
+                //BitmapImage asd = new BitmapImage();
+                //if (t.Result.ProfilePhotoUrl == null)
+                //{
+                //    MessageBox.Show("net");
+                //    asd.BeginInit();
+                //    asd.UriSource = new Uri(@"no-profile.jpg");
+                //    asd.EndInit();
+                //    App.Authorization.data.Ava = asd;
+                //    avka.ImageSource = asd;
+                //    return;
+                //}
+                WebRequest requestPic = WebRequest.Create(t.ProfilePhotoUrl);
+                WebResponse responsePic = requestPic.GetResponse();
+                
+                var ms = responsePic.GetResponseStream();
+                BitmapImage asd = new BitmapImage();
+                asd.BeginInit();
+                asd.StreamSource = ms;
+                asd.EndInit();
+                App.Authorization.data.Ava = asd;
+                avka.ImageSource = asd;
+                //========
+                ms.Close();
+                responsePic.Close();
+                requestPic.Abort();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
             if (!App.Authorization.isOnline())
             {
+                this.Visibility = Visibility.Hidden;
                 logout_openAuth();
             }
             else
             {
+                try {
                 UsernameText.Text = App.Authorization.data.sender.username;
                 App.Data.DatabaseLoad(App.Authorization.data.sender);
-               // App.Data.DatabaseDBLoad(App.Authorization.data.sender);
-
-
+                changePhoto();
+                App.Authorization.CheckToken();
+                App.Data.DatabaseDBLoad(App.Authorization.data.sender);
+               //     getspsace();
+                    
+                    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             //else
             //{
@@ -122,13 +191,18 @@ namespace PSDGitFinal
         {
             try
             {
+              
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "PSD files(*.PSD;)|*.PSD; ";
                 openFileDialog.CheckFileExists = true;
                 openFileDialog.Multiselect = false;
                 if (openFileDialog.ShowDialog() == true) //Добавление проекта в бд и загрузка всех проектов из бд в программу с "нормальным" id
                 {
-
+                    if (App.Data.ProjectExist(openFileDialog.SafeFileName, App.Authorization.data.sender.id))
+                    {
+                        MessageBox.Show("Проект существует");
+                        return;
+                    }
                     PSDProject b = new PSDProject(-1, openFileDialog.SafeFileName, openFileDialog.FileName.Remove(openFileDialog.FileName.Length - openFileDialog.SafeFileName.Length), App.Authorization.data.sender.id);
                     //App.Data.AddProject(b);
                     App.Data.DatabaseInsert(b);
@@ -149,6 +223,7 @@ namespace PSDGitFinal
             PSDProject o = (PSDProject)Tagging.SelectedItem;
             Data.TryUpload(App.Data.ProjectLoad, o, App.Authorization.data.client, App.Authorization.data.sender);
                 //     App.Authorization.data.client.Files
+            getspsace();
             }
             catch (Exception ex)
             {
@@ -167,6 +242,7 @@ namespace PSDGitFinal
         {
             selected = (PSDProject)Tagging.SelectedItem;
             commits.DataContext = selected;
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -175,7 +251,17 @@ namespace PSDGitFinal
         }
         private void Delete_project(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                PSDProject o = (PSDProject)Tagging.SelectedItem;
+                o.off();
+                App.Data.DeleteProject(o);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Button_logout(object sender, RoutedEventArgs e)
@@ -186,13 +272,39 @@ namespace PSDGitFinal
         private void logout_openAuth()
         {
             this.IsEnabled = false;
+            this.Visibility = Visibility.Hidden;
             AuthorizationWindow o = new AuthorizationWindow();
             o.Show();
         }
-        //private void Db_files(object sender, RoutedEventArgs e)
+
+
+   
+            private void SearchString_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ObservableCollection<PSDProject> SearchResult = new ObservableCollection<PSDProject>();
+            Regex SearchRequest = new Regex(SearchString.Text);
+
+            foreach (var Project in App.Data.UserProjects)
+            {
+                if (SearchRequest.IsMatch(Project.name) == true)
+                {
+                    SearchResult.Add(Project);
+                }
+            }
+            Tagging.ItemsSource = SearchString.Text.Length == 0 ? App.Data.UserProjects : SearchResult;
+        }
+
+        //private void commits_SelectionChanged(object sender, MouseButtonEventArgs e)
         //{
-        //    dropbox_files dwin = new dropbox_files();
-        //    dwin.Show();
+        //    try
+        //    {
+        //        ((Save)commits.SelectedItem).Open((PSDProject)Tagging.SelectedItem);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
         //}
+    
     }
 }

@@ -10,8 +10,10 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         Title="MainWindow" 
-        MaxWidth="900" 
-        MaxHeight="950" Width="1000" Height="750">
+        MinWidth="850"
+        MinHeight="650"
+        MaxWidth="1000" 
+        MaxHeight="650" Width="1000" Height="650">
     <Window.Resources>
 
 
@@ -432,9 +434,11 @@
                                                     Command="{Binding MenuCommand}">
                                                 <Image Width="0"/>
                                             </Button>
-                                            <Viewbox Margin="0 10 0 10">
-                                                <TextBlock Foreground="#46435b"
+                                            <Viewbox VerticalAlignment="Center" StretchDirection="Both" Margin="0 10 0 10">
+                                                <Border Width="40" Height="22">
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#46435b"
                                                            Text="PSDGit" />
+                                                </Border>
                                             </Viewbox>
                                         </StackPanel>
                                         <!-- Window Buttons -->
@@ -461,9 +465,9 @@
                                                         Grid.Column="1" 
                                                         VerticalAlignment="Center" 
                                                         HorizontalAlignment="Left" 
-                                                      Background="Transparent"
-                                                     Width="110" 
-                                                       
+                                                        Background="Transparent"
+                                                        Width="110" 
+                                                        Style="{StaticResource ResourceKey=Hoverless}"
                                                         BorderBrush="Transparent"
                                                         Height="29">
 
@@ -494,7 +498,8 @@
                                                 <StackPanel  Orientation="Horizontal">
                                                     <Button Command="{Binding MinimizeCommand}" 
                                                             Style="{StaticResource WindowControlButton}" 
-                                                            Content="_" />
+                                                            Content="_" 
+                                                            />
                                                     <Button Click="Button_Click" 
                                                             Command="{Binding CloseCommand}"  
                                                             Style="{StaticResource WindowCloseButton}" 
@@ -522,7 +527,8 @@
 
     <WindowChrome.WindowChrome>
         <WindowChrome 
-            ResizeBorderThickness="10"
+            
+            ResizeBorderThickness="0"
             CaptionHeight="30"
             GlassFrameThickness="0"
             CornerRadius="0"
@@ -597,6 +603,7 @@
                             Margin="0 10 0 0" 
                             Grid.Row="0">
                     <TextBox Background="#272533" 
+                             Foreground="#605c73" 
                              Tag="Search" 
                              CaretBrush="Blue" 
                              Margin="5 10 5 20"  
@@ -621,14 +628,14 @@
                                             BorderBrush="Black"
                                             
                                             BorderThickness="0" 
-                                            CornerRadius="15"
+                                            CornerRadius="8"
                                             SnapsToDevicePixels="True"
                                             UseLayoutRounding="True"/>
                                     <ScrollViewer FontSize="12" 
-                                                  Margin="3 1 0 0" 
-                                                  
+                                                  Margin="14 0 0 0" 
+                                                 
                                                   VerticalAlignment="Center"
-                                                  Foreground="Black" 
+                                                  Foreground="#605c73" 
                                                   x:Name="PART_ContentHost"/>
                                     <Label FontSize="12"
                                            Visibility="Collapsed"
@@ -931,11 +938,13 @@
                 <Border x:Name="HeightElem"/>
                 
                 <ListBox VerticalAlignment="Top"
+                 SelectionChanged="commits_SelectionChanged"
                          x:Name="commits" 
                          Background="Transparent"
                          ItemsSource="{Binding Commits}"
                          BorderThickness="0"
                          DockPanel.Dock="Top" 
+                      
                        
                          Height="{Binding ElementName=HeightElem, Path=ActualHeight}"
                          >
@@ -962,22 +971,17 @@
 
                 </ListBox.ItemsPanel>
                     
-                <ListBox.ItemContainerStyle>
+                <ListBox.ItemContainerStyle >
                     
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Margin" Value="0 0 20 0"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate>
-                                        <Button Margin="10 8 0 0"
-                                                Width="250" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Path=Height}"
-                                                >
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
 
-                                                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Width}" 
-                                                          Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Height}">
-                                                    <Grid.RowDefinitions>
+
+                                        <Grid Width="200" >
+                                            <Grid.RowDefinitions>
                                                         <RowDefinition Height="0.85*" />
                                                         <RowDefinition Height="0.15*"/>
                                                     </Grid.RowDefinitions>
@@ -1040,9 +1044,7 @@
                                                             </Setter>
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
+                                      
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -1075,16 +1077,17 @@
                                 Margin="0 5 0 0" 
                                 DockPanel.Dock="Bottom" 
                                 Foreground="Gray" 
-                                Click="Button_logout" 
+                                Click="Button_logout"
+ 
                                 Content="Log Out"/>
                     </StackPanel>
                     <Ellipse Stroke="Transparent" 
-                             StrokeThickness="2" 
+                             StrokeThickness="1" 
                              Width="60"
                              DataContext="App.Authorization.data"
                              Height="60">
                         <Ellipse.Fill>
-                            <ImageBrush x:Name="avka" ImageSource="{Binding Ava, Mode=TwoWay}"/>
+                            <ImageBrush x:Name="avka" />
                         </Ellipse.Fill>
                     </Ellipse>
                 </StackPanel>
@@ -1096,6 +1099,7 @@
                         ClipToBounds="True" 
                         SnapsToDevicePixels="True"
                         >
+                
                 <ProgressBar Minimum="0" 
                              Maximum="100" 
                              Value="60" 

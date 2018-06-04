@@ -8,8 +8,10 @@
         ResizeMode="NoResize"
         AllowsTransparency="True"
         WindowStyle="None"
+        Topmost="True"
         Background="Transparent"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
+        
         Title="MainWindow" 
         Height="320" 
         Width="360"
@@ -19,53 +21,47 @@
         <Storyboard x:Key="ClosingButtonAnimation" FillBehavior="HoldEnd">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="button">
                 <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1.275"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1.275"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="button">
                 <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1.275"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1.275"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="button">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="-11"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="-11"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="button">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="border">
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-45"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-45"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="border1">
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="45"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="45"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ClosingButtonAnumationLeaving">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="button">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1.275"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="button">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1.275"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="button">
-                <EasingDoubleKeyFrame KeyTime="0" Value="-11"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="button">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="border">
-                <EasingDoubleKeyFrame KeyTime="0" Value="45"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="border1">
-                <EasingDoubleKeyFrame KeyTime="0" Value="-45"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
@@ -88,7 +84,7 @@
             CornerRadius="2,0,0,2"
             Margin="1" >
     	<Border.Background>
-    		<SolidColorBrush Color="Gray"/>
+            <SolidColorBrush Color="#49465a"/>
     	</Border.Background>
     </Border>
     <Path x:Name="Arrow"
@@ -97,7 +93,7 @@
           VerticalAlignment="Center"
           Data="M 0 0 L 4 4 L 8 0 Z" >
     	<Path.Fill>
-    		<SolidColorBrush Color="Green"/>
+                        <SolidColorBrush Color="#0264fb"/>
     	</Path.Fill>
     </Path>
   </Grid>
@@ -105,9 +101,12 @@
 
 <ControlTemplate x:Key="ComboBoxTextBox"
                  TargetType="{x:Type TextBox}">
-  <Border x:Name="PART_ContentHost"
+            <Border x:Name="PART_ContentHost"
           Focusable="False"
-          Background="{TemplateBinding Background}" />
+          
+          Background="{TemplateBinding Background}" >
+       
+            </Border>
 </ControlTemplate>
 
 <Style x:Key="{x:Type ComboBox}"
@@ -308,7 +307,8 @@
                 </Grid>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center">
                     <TextBlock FontSize="45" Margin="0 10 0 0" HorizontalAlignment="Center" Foreground="White">Hi, <Span Foreground="#0264fb">bro</Span>!</TextBlock>
-                    <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>
+                    <!--<TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">It is a long established fact that a reader will be <LineBreak/>distracted by the readable content</TextBlock>-->
+                    <TextBlock Margin="0 15 0 0" TextAlignment="Center"  TextWrapping="Wrap" Foreground="#46435b">Log in to your account to continue<LineBreak/>Best regards, PSDGit developer team</TextBlock>
                     <Button Click="Button_Click_1"  Template="{StaticResource AnimatedProjectButton}"
                             Margin="0 30 0 0"  Grid.Column="1" Width="160" Height="35">
                         <Label VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -322,10 +322,13 @@
                             Content="Or use local repository"
                             HorizontalAlignment="Center"/>
                     -->
-                    <ComboBox SelectedIndex="0" Margin="0 15 0 0" ItemsSource="{Binding ActiveUsers}" DisplayMemberPath="username">
+                    <TextBlock Margin="0 7 0 4" Foreground="#46435b">Or choose one of already logged account:</TextBlock>
+                    <ComboBox x:Name="select" ItemsSource="{Binding ActiveUsers}" DisplayMemberPath="username">
+                    
                     </ComboBox>
                 </StackPanel>
             </Grid>
         </Grid>
     </Grid>
 </Window>
+    

@@ -39,6 +39,7 @@ namespace DropbBoxLogIn
 
     class Auth
     {
+        public ulong memory { get; set; }
         public delegate void none();
         public static event none SenderChanged;
         public static event none logout;
@@ -100,7 +101,7 @@ namespace DropbBoxLogIn
             }  //upload file of active users
             public void UsersSave()
             {
-
+                
                 if (File.Exists("userlist"))
                 {
                     File.Delete("userlist");

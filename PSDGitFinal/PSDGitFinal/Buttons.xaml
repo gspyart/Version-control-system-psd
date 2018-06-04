@@ -97,7 +97,7 @@
         <Border SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand"  CornerRadius="15" Background="#0062ff" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
             <local:RippleDecorator Background="#0062ff" Foreground="#fff" HighlightBackground="{TemplateBinding Background}">
                 <local:RippleDecorator.OpacityMask>
-                    
+
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border SnapsToDevicePixels="True" UseLayoutRounding="True" CornerRadius="15" Background="Red" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border}, Path=Height}" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border}, Path=Width}"/>

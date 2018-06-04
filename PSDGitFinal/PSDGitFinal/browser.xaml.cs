@@ -24,11 +24,13 @@ namespace PSDGitFinal
         {
             InitializeComponent();
             this.DataContext = App.Authorization.data;
+            /*
             users.SelectionChanged += (a, b) =>
             {
                 App.Authorization.Choose((DropbBoxLogIn.User)(users.SelectedItem));
                 this.Close();
             };
+            */
             Browser.Navigated += (a,b) =>
             {
                 if (Browser.Source.AbsoluteUri.Contains("access_token"))

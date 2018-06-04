@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:PSDGitFinal">
-    
     <!-- Hoverless button -->
     <Style TargetType="{x:Type Button}" x:Key="Hoverless">
         <Setter Property="Background" Value="Transparent" />
@@ -62,4 +61,70 @@
         </Style.Triggers>
 
     </Style>
+    <!-- Accent Button-->
+    <ControlTemplate x:Key="ProjectButton" TargetType="Button">
+        <Border Cursor="Hand" Background="#0062ff" CornerRadius="14">
+            <Border.BitmapEffect>
+                <DropShadowBitmapEffect x:Name="ButtonHighlighting" Opacity="0" Color="#FF61BFAE" Direction="0" ShadowDepth="0" >
+
+                </DropShadowBitmapEffect>
+            </Border.BitmapEffect>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label Foreground="White" Margin="2 2 2 2" Content="{TemplateBinding Content}" />
+            </StackPanel>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.3" Storyboard.TargetName="ButtonHighlighting" Storyboard.TargetProperty="Opacity" To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.3" Storyboard.TargetName="ButtonHighlighting" Storyboard.TargetProperty="Opacity" To="0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!-- Accent Button With Ripple Effect -->
+    <ControlTemplate x:Key="AnimatedProjectButton" TargetType="Button" >
+        <Border SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand"  CornerRadius="15" Background="#0062ff" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+            <local:RippleDecorator Background="#0062ff" Foreground="#fff" HighlightBackground="{TemplateBinding Background}">
+                <local:RippleDecorator.OpacityMask>
+                    
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border SnapsToDevicePixels="True" UseLayoutRounding="True" CornerRadius="15" Background="Red" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border}, Path=Height}" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border}, Path=Width}"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </local:RippleDecorator.OpacityMask>
+                <ContentPresenter Content="{TemplateBinding Content}"/>
+            </local:RippleDecorator>
+        </Border>
+    </ControlTemplate>
+    <!-- Regular Hoverless Button Without Highlighting -->
+    <ControlTemplate x:Key="RegularButton" TargetType="Button">
+        <TextBlock Cursor="Hand" TextDecorations="Underline" HorizontalAlignment="Right" Margin="0 0 5 0" TextAlignment="Right" Text="{TemplateBinding Content}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Foreground" Value="#FF21DADA"/>
+                            <Setter Property="TextBlock.TextDecorations" Value="None"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+            </TextBlock.Style>
+
+
+        </TextBlock>
+    </ControlTemplate>
 </ResourceDictionary>

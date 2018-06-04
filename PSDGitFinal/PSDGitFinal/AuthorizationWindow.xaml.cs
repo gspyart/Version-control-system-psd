@@ -36,8 +36,15 @@ namespace PSDGitFinal
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            browser web = new browser();
-            web.Show();
+            if (select.SelectedItem != null)
+            {
+                App.Authorization.Choose((DropbBoxLogIn.User)(select.SelectedItem));
+            }
+            else
+            {
+                browser web = new browser();
+                web.Show();
+            }
             
         }
 
